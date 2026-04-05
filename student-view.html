@@ -30,6 +30,10 @@
   .icon-6 { background: #fbe9e7; }
   .icon-7 { background: #e8eaf6; }
   .icon-8 { background: #f5f5f5; }
+  .icon-9 { background: #e3f2fd; }
+  .icon-10 { background: #e8f5e9; }
+  .icon-11 { background: #fff8e1; }
+  .icon-12 { background: #fce4ec; }
   .link-info { flex: 1; min-width: 0; }
   .link-num { font-size: 0.7rem; font-weight: 700; color: #bbb; text-transform: uppercase; letter-spacing: 0.05em; }
   .link-title { font-size: 0.98rem; font-weight: 600; color: #1a1a1a; margin-top: 0.1rem; }
@@ -72,8 +76,10 @@ const firebaseConfig = {
   appId: "1:000000000000:web:0000000000000000"
 };
 
-const icons = ['🛠️','🎨','📝','📂','🎴','✨','📄','🎬','🔗'];
-const iconClass = ['icon-0','icon-1','icon-2','icon-3','icon-4','icon-5','icon-6','icon-7','icon-8'];
+const icons = ['🛠️','🎨','📝','📂','🎴','✨','📄','🎬','🔗','🖥️','📖','🔑','💎'];
+const iconClass = ['icon-0','icon-1','icon-2','icon-3','icon-4','icon-5','icon-6','icon-7','icon-8','icon-9','icon-10','icon-11','icon-12'];
+function getIcon(i) { return i < icons.length ? icons[i] : '🔗'; }
+function getIconClass(i) { return 'icon-' + (i % iconClass.length); }
 
 function shortUrl(url) {
   try { const u = new URL(url); return u.hostname + u.pathname.slice(0, 30) + (u.pathname.length > 30 ? '...' : ''); }
@@ -97,7 +103,8 @@ db.ref('workshop/links').on('value', snap => {
   list.innerHTML = '';
   let anyVisible = false;
 
-  for (let i = 0; i <= 8; i++) {
+  const maxIndex = Math.max(...Object.keys(data).map(Number), 11);
+  for (let i = 0; i <= maxIndex; i++) {
     const item = data[i];
     if (item && item.visible) {
       anyVisible = true;
@@ -108,7 +115,7 @@ db.ref('workshop/links').on('value', snap => {
       a.href = item.url;
       a.target = '_blank';
       a.innerHTML = `
-        <div class="link-icon ${iconClass[i]}">${icons[i]}</div>
+        <div class="link-icon ${getIconClass(i)}">${getIcon(i)}</div>
         <div class="link-info">
           <div class="link-num">资源 ${i+1}</div>
           <div class="link-title">${item.title}${isNew ? '<span class="new-badge">NEW</span>' : ''}</div>

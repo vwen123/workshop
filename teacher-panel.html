@@ -100,11 +100,22 @@ const DEFAULT_CARDS = [
   { title: "DeckEdit 简报工具", url: "https://deckedit.com/zh-Hans" },
   { title: "Magic Eraser 背景消除", url: "https://magiceraser.org" },
   { title: "课程讲义（Google 文件）", url: "https://docs.google.com/document/d/1owwM0gpp5N6WpvhNo0j6VJnyWYu0o-rnsqZReGruZ6g/edit?tab=t.0" },
-  { title: "YouTube to NotebookLM 扩展", url: "https://chromewebstore.google.com/detail/youtube-to-notebooklm/kobncfkmjelbefaoohoblamnbackjggk" }
+  { title: "YouTube to NotebookLM 扩展", url: "https://chromewebstore.google.com/detail/youtube-to-notebooklm/kobncfkmjelbefaoohoblamnbackjggk" },
+  { title: "Slide Generator", url: "https://slidegenerator-swart.vercel.app/" },
+  { title: "NotebookLM 进阶课程", url: "https://sites.google.com/view/notebooklmadvancecourse/home" },
+  { title: "Google AI Studio API Keys", url: "https://aistudio.google.com/app/api-keys" },
+  { title: "Gemini Gem", url: "https://gemini.google.com/gem/98259a2f3e85?usp=sharing" }
 ];
 
-// Load cards from localStorage (persists edits & new cards)
-let cards = JSON.parse(localStorage.getItem('wk_cards') || 'null') || DEFAULT_CARDS.map(c => ({...c}));
+// Load cards from localStorage; auto-merge any new DEFAULT_CARDS not yet saved
+let cards = JSON.parse(localStorage.getItem('wk_cards') || 'null');
+if (!cards) {
+  cards = DEFAULT_CARDS.map(c => ({...c}));
+} else if (cards.length < DEFAULT_CARDS.length) {
+  // Append new defaults that don't exist yet
+  DEFAULT_CARDS.slice(cards.length).forEach(c => cards.push({...c}));
+  localStorage.setItem('wk_cards', JSON.stringify(cards));
+}
 let pushState = {}; // { i: true/false }
 
 function saveCards() {
