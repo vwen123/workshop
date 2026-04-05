@@ -6,6 +6,7 @@
 <title>NotebookLM 工作坊 · 课程资源</title>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: system-ui, sans-serif; background: #f7f7f3; min-height: 100vh; padding: 2rem 1.2rem; }
@@ -37,16 +38,9 @@
   .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; display: inline-block; margin-right: 5px; }
   .footer { text-align: center; margin-top: 2rem; font-size: 0.78rem; color: #ccc; }
   .new-badge { background: #dcfce7; color: #166534; font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 20px; margin-left: 6px; vertical-align: middle; }
-  .dl-btn { display: none; width: 100%; margin-top: 1.2rem; padding: 0.7rem; background: #1a1a1a; color: #fff; border: none; border-radius: 12px; font-size: 0.92rem; font-weight: 600; cursor: pointer; letter-spacing: 0.02em; }
+  .dl-btn { display: none; width: 100%; margin-top: 1.2rem; padding: 0.7rem; background: #1a1a1a; color: #fff; border: none; border-radius: 12px; font-size: 0.92rem; font-weight: 600; cursor: pointer; letter-spacing: 0.02em; transition: background 0.15s; }
   .dl-btn:active { background: #333; }
-  @media print {
-    body { background: #fff; padding: 1.5rem; }
-    .header p, .footer, .dl-btn, .arrow, .new-badge { display: none !important; }
-    .link-card { border: 1px solid #ddd; border-radius: 8px; page-break-inside: avoid; animation: none; }
-    .link-card { box-shadow: none; }
-    .print-url { display: block !important; font-size: 0.78rem; color: #555; margin-top: 0.2rem; word-break: break-all; }
-  }
-  .print-url { display: none; }
+  .dl-btn:disabled { background: #888; cursor: not-allowed; }
 </style>
 </head>
 <body>
@@ -63,7 +57,7 @@
 
 <div id="links-list" class="links-list" style="display:none"></div>
 
-<button class="dl-btn" id="dl-btn" onclick="window.print()">⬇ 下载 PDF 存档</button>
+<button class="dl-btn" id="dl-btn" onclick="downloadPDF()">⬇ 下载 PDF 存档</button>
 
 <div class="footer">页面自动更新 · 无需刷新</div>
 
@@ -119,7 +113,6 @@ db.ref('workshop/links').on('value', snap => {
           <div class="link-num">资源 ${i+1}</div>
           <div class="link-title">${item.title}${isNew ? '<span class="new-badge">NEW</span>' : ''}</div>
           <div class="link-url">${shortUrl(item.url)}</div>
-          <div class="print-url">${item.url}</div>
         </div>
         <div class="arrow">›</div>`;
       list.appendChild(a);
@@ -138,6 +131,50 @@ db.ref('workshop/links').on('value', snap => {
     document.getElementById('dl-btn').style.display = 'none';
   }
 });
+
+function downloadPDF() {
+  const btn = document.getElementById('dl-btn');
+  btn.textContent = '生成中...';
+  btn.disabled = true;
+
+  const today = new Date().toLocaleDateString('zh-CN');
+  const container = document.createElement('div');
+  container.style.cssText = 'padding:28px 24px; font-family:system-ui,sans-serif; background:#fff; width:520px;';
+
+  let html = `
+    <h2 style="font-size:18px;font-weight:700;color:#1a1a1a;margin-bottom:4px;">课程资源</h2>
+    <p style="font-size:12px;color:#888;margin-bottom:22px;">NotebookLM 工作坊 · ${today}</p>
+  `;
+
+  document.querySelectorAll('.link-card').forEach((card, idx) => {
+    const title = card.querySelector('.link-title').childNodes[0].textContent.trim();
+    const url = card.href;
+    const num = card.querySelector('.link-num').textContent;
+    html += `
+      <div style="margin-bottom:12px;padding:12px 14px;border:1px solid #e8e8e8;border-radius:10px;">
+        <div style="font-size:10px;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:0.05em;">${num}</div>
+        <div style="font-size:14px;font-weight:600;color:#1a1a1a;margin:3px 0 5px;">${title}</div>
+        <div style="font-size:11px;color:#555;word-break:break-all;">${url}</div>
+      </div>`;
+  });
+
+  html += `<p style="font-size:10px;color:#ccc;text-align:center;margin-top:18px;">导出时间：${new Date().toLocaleString('zh-CN')}</p>`;
+  container.innerHTML = html;
+  document.body.appendChild(container);
+
+  const filename = `工作坊课程资源_${today.replace(/\//g,'-')}.pdf`;
+  html2pdf().set({
+    margin: 0,
+    filename,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  }).from(container).save().then(() => {
+    document.body.removeChild(container);
+    btn.textContent = '⬇ 下载 PDF 存档';
+    btn.disabled = false;
+  });
+}
 </script>
 </body>
 </html>
