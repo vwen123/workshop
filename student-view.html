@@ -169,16 +169,14 @@ function downloadPDF() {
 
   const today = new Date().toLocaleDateString('zh-CN');
 
-  const wrap = document.createElement('div');
-  wrap.style.cssText = 'width:170mm;font-family:system-ui,sans-serif;background:#fff;padding:0;margin:0;';
+  let html = `
+    <div style="margin-bottom:10px;">
+      <div style="font-size:16px;font-weight:700;color:#1a1a1a;margin-bottom:2px;">课程资源</div>
+      <div style="font-size:11px;color:#999;">NotebookLM 工作坊 · ${today}</div>
+    </div>
+    <div style="border-top:1px solid #eee;margin-bottom:10px;"></div>`;
 
-  let html = `<div style="margin-bottom:10px;">
-    <div style="font-size:16px;font-weight:700;color:#1a1a1a;margin-bottom:2px;">课程资源</div>
-    <div style="font-size:11px;color:#999;">NotebookLM 工作坊 · ${today}</div>
-  </div>
-  <div style="border-top:1px solid #eee;margin-bottom:10px;"></div>`;
-
-  document.querySelectorAll('.link-card').forEach((card) => {
+  document.querySelectorAll('.link-card').forEach(card => {
     const title = card.querySelector('.link-title').childNodes[0].textContent.trim();
     const url = card.href;
     const num = card.querySelector('.link-num').textContent;
@@ -190,20 +188,25 @@ function downloadPDF() {
   });
 
   html += `<div style="font-size:9px;color:#ccc;text-align:center;margin-top:6px;">导出时间：${new Date().toLocaleString('zh-CN')}</div>`;
+
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'position:fixed;top:0;left:0;width:794px;padding:30px 36px;background:#fff;font-family:system-ui,sans-serif;z-index:9999;pointer-events:none;';
   wrap.innerHTML = html;
   document.body.appendChild(wrap);
 
-  html2pdf().set({
-    margin:        [8, 15, 10, 15],
-    filename:      '工作坊课程资源_' + today.replace(/\//g, '-') + '.pdf',
-    image:         { type: 'jpeg', quality: 0.98 },
-    html2canvas:   { scale: 2, useCORS: true, logging: false },
-    jsPDF:         { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  }).from(wrap).save().then(() => {
-    document.body.removeChild(wrap);
-    btn.textContent = '⬇ 下载 PDF 存档';
-    btn.disabled = false;
-  });
+  setTimeout(() => {
+    html2pdf().set({
+      margin:      0,
+      filename:    '工作坊课程资源_' + today.replace(/\//g, '-') + '.pdf',
+      image:       { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, logging: false, scrollX: 0, scrollY: 0 },
+      jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    }).from(wrap).save().then(() => {
+      document.body.removeChild(wrap);
+      btn.textContent = '⬇ 下载 PDF';
+      btn.disabled = false;
+    });
+  }, 300);
 }
 </script>
 </body>
