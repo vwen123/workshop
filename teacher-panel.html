@@ -6,47 +6,55 @@
 <title>工作坊推送链接平台</title>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: system-ui, sans-serif; background: #f5f5f0; min-height: 100vh; padding: 1.5rem 1rem 3rem; }
   h1 { font-size: 1.1rem; font-weight: 600; color: #222; margin-bottom: 0.25rem; }
   .sub { font-size: 0.85rem; color: #777; margin-bottom: 1.5rem; }
 
-  /* Status bar */
   .status-bar { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; background: #fff; border-radius: 10px; border: 1px solid #e8e8e8; margin-bottom: 1.5rem; font-size: 0.85rem; color: #555; }
   .dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; flex-shrink: 0; }
   .dot.connected { background: #22c55e; }
   .dot.error { background: #ef4444; }
 
   /* Card */
-  .card { background: #fff; border-radius: 14px; border: 1px solid #e8e8e8; padding: 1rem 1.1rem; margin-bottom: 0.85rem; }
+  .card { background: #fff; border-radius: 14px; border: 1px solid #e8e8e8; padding: 1rem 1.1rem 1rem 0.6rem; margin-bottom: 0.85rem; display: flex; gap: 0.5rem; align-items: flex-start; transition: box-shadow 0.15s; }
   .card.editing { border-color: #1a1a1a; }
-  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
+  .card.sortable-ghost { opacity: 0.35; }
+  .card.sortable-drag { box-shadow: 0 8px 24px rgba(0,0,0,0.12); border-color: #ccc; }
+
+  /* Drag handle */
+  .drag-handle { cursor: grab; color: #d0d0d0; font-size: 1.1rem; padding: 0.25rem 0.1rem; margin-top: 0.15rem; flex-shrink: 0; user-select: none; touch-action: none; line-height: 1; }
+  .drag-handle:active { cursor: grabbing; }
+
+  .card-body { flex: 1; min-width: 0; }
+  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.45rem; }
   .card-label { font-size: 0.72rem; font-weight: 700; color: #bbb; text-transform: uppercase; letter-spacing: 0.05em; }
   .badge { font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 20px; margin-left: 6px; }
   .badge-live { background: #dcfce7; color: #166534; }
   .badge-hidden { background: #f3f4f6; color: #9ca3af; }
-  .card-icons { display: flex; gap: 0.35rem; }
-  .icon-btn { background: none; border: none; cursor: pointer; font-size: 0.95rem; color: #ccc; padding: 2px 4px; border-radius: 6px; line-height: 1; transition: color 0.15s, background 0.15s; }
+  .card-icons { display: flex; gap: 0.3rem; flex-shrink: 0; }
+  .icon-btn { background: none; border: none; cursor: pointer; font-size: 0.92rem; color: #ccc; padding: 2px 5px; border-radius: 6px; line-height: 1; transition: color 0.15s, background 0.15s; }
   .icon-btn:hover { color: #555; background: #f3f4f6; }
   .icon-btn.edit:hover { color: #1a1a1a; }
   .icon-btn.del:hover { color: #c0392b; background: #fff3f3; }
 
   /* View mode */
-  .card-title { font-size: 0.98rem; font-weight: 600; color: #222; margin-bottom: 0.22rem; }
-  .card-url { font-size: 0.76rem; color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.85rem; }
+  .card-title { font-size: 0.97rem; font-weight: 600; color: #222; margin-bottom: 0.2rem; }
+  .card-url { font-size: 0.75rem; color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.8rem; }
 
   /* Edit mode */
   .edit-mode { display: none; }
   .card.editing .view-mode { display: none; }
   .card.editing .edit-mode { display: block; }
-  .input-field { width: 100%; padding: 0.5rem 0.7rem; border: 1px solid #e0e0e0; border-radius: 9px; font-size: 0.9rem; color: #222; background: #fafafa; margin-bottom: 0.55rem; outline: none; }
+  .input-field { width: 100%; padding: 0.48rem 0.7rem; border: 1px solid #e0e0e0; border-radius: 9px; font-size: 0.88rem; color: #222; background: #fafafa; margin-bottom: 0.5rem; outline: none; }
   .input-field:focus { border-color: #1a1a1a; background: #fff; }
   .input-field::placeholder { color: #bbb; }
 
   /* Buttons */
   .btn-row { display: flex; gap: 0.5rem; }
-  .btn { flex: 1; padding: 0.58rem 0.7rem; border-radius: 9px; border: none; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .btn { flex: 1; padding: 0.55rem 0.65rem; border-radius: 9px; border: none; font-size: 0.86rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
   .btn-push { background: #1a1a1a; color: #fff; }
   .btn-push:active { transform: scale(0.97); }
   .btn-push.active { background: #0a7c4e; }
@@ -54,14 +62,10 @@
   .btn-save { background: #1a1a1a; color: #fff; }
   .btn-cancel { background: #f0f0f0; color: #666; }
 
-  /* Add button */
   .add-btn { width: 100%; padding: 0.7rem; background: #fff; color: #555; border: 1.5px dashed #ccc; border-radius: 12px; font-size: 0.9rem; font-weight: 600; cursor: pointer; margin-bottom: 1rem; transition: border-color 0.15s, color 0.15s; }
   .add-btn:hover { border-color: #888; color: #222; }
-
-  /* Reset */
-  .reset-btn { width: 100%; padding: 0.62rem; background: #fff3f3; color: #c0392b; border: 1px solid #fca5a5; border-radius: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; margin-top: 0.25rem; }
+  .reset-btn { width: 100%; padding: 0.62rem; background: #fff3f3; color: #c0392b; border: 1px solid #fca5a5; border-radius: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
   .reset-btn:active { transform: scale(0.98); }
-
   .section-title { font-size: 0.72rem; font-weight: 700; color: #bbb; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
 </style>
 </head>
@@ -107,62 +111,119 @@ const DEFAULT_CARDS = [
   { title: "Gemini Gem", url: "https://gemini.google.com/gem/98259a2f3e85?usp=sharing" }
 ];
 
-// Load cards from localStorage; auto-merge any new DEFAULT_CARDS not yet saved
+// Load from localStorage; auto-append new defaults
 let cards = JSON.parse(localStorage.getItem('wk_cards') || 'null');
 if (!cards) {
-  cards = DEFAULT_CARDS.map(c => ({...c}));
-} else if (cards.length < DEFAULT_CARDS.length) {
-  // Append new defaults that don't exist yet
-  DEFAULT_CARDS.slice(cards.length).forEach(c => cards.push({...c}));
-  localStorage.setItem('wk_cards', JSON.stringify(cards));
+  cards = DEFAULT_CARDS.map(c => ({ ...c, id: uid() }));
+} else {
+  // Ensure every card has an id (migration)
+  cards = cards.map(c => c.id ? c : { ...c, id: uid() });
+  // Append new defaults not yet in list
+  if (cards.length < DEFAULT_CARDS.length) {
+    DEFAULT_CARDS.slice(cards.length).forEach(c => cards.push({ ...c, id: uid() }));
+  }
+  saveCards();
 }
-let pushState = {}; // { i: true/false }
+
+let pushState = {};
+let sortable = null;
+
+function uid() { return Math.random().toString(36).slice(2, 9); }
 
 function saveCards() {
   localStorage.setItem('wk_cards', JSON.stringify(cards));
 }
 
 function shortUrl(url) {
-  try { const u = new URL(url); return u.hostname + (u.pathname.length > 1 ? u.pathname.slice(0,28) + (u.pathname.length > 28 ? '...' : '') : ''); }
-  catch { return url.slice(0, 40); }
+  try {
+    const u = new URL(url);
+    const path = u.pathname.length > 1 ? u.pathname.slice(0, 26) + (u.pathname.length > 26 ? '…' : '') : '';
+    return u.hostname + path;
+  } catch { return url.slice(0, 40); }
 }
 
 function renderCards() {
+  if (sortable) { sortable.destroy(); sortable = null; }
   const container = document.getElementById('cards-container');
   container.innerHTML = '';
+
   cards.forEach((card, i) => {
-    const active = pushState[i];
+    const active = !!pushState[i];
     const div = document.createElement('div');
     div.className = 'card';
     div.id = 'card-' + i;
+    div.dataset.idx = i;
     div.innerHTML = `
-      <div class="card-header">
-        <div class="card-label">资源 ${i + 1}
-          <span class="badge ${active ? 'badge-live' : 'badge-hidden'}" id="badge-${i}">${active ? '已推送' : '未推送'}</span>
+      <div class="drag-handle" title="拖拉排序">⠿</div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-label">资源 ${i + 1}
+            <span class="badge ${active ? 'badge-live' : 'badge-hidden'}" id="badge-${i}">${active ? '已推送' : '未推送'}</span>
+          </div>
+          <div class="card-icons">
+            <button class="icon-btn edit" onclick="startEdit(${i})" title="编辑">✏️</button>
+            <button class="icon-btn del" onclick="deleteCard(${i})" title="删除">✕</button>
+          </div>
         </div>
-        <div class="card-icons">
-          <button class="icon-btn edit" onclick="startEdit(${i})" title="编辑">✏️</button>
-          <button class="icon-btn del" onclick="deleteCard(${i})" title="删除">✕</button>
+        <div class="view-mode">
+          <div class="card-title">${card.title || '（未填写标题）'}</div>
+          <div class="card-url">${shortUrl(card.url)}</div>
+          <div class="btn-row">
+            <button class="btn btn-push${active ? ' active' : ''}" onclick="pushLink(${i})">推送给学员</button>
+            <button class="btn btn-hide" onclick="hideLink(${i})">收回</button>
+          </div>
         </div>
-      </div>
-      <div class="view-mode">
-        <div class="card-title">${card.title || '（未填写标题）'}</div>
-        <div class="card-url">${shortUrl(card.url)}</div>
-        <div class="btn-row">
-          <button class="btn btn-push${active ? ' active' : ''}" id="push-btn-${i}" onclick="pushLink(${i})">推送给学员</button>
-          <button class="btn btn-hide" onclick="hideLink(${i})">收回</button>
-        </div>
-      </div>
-      <div class="edit-mode">
-        <input class="input-field" id="edit-title-${i}" type="text" value="${card.title}" placeholder="标题">
-        <input class="input-field" id="edit-url-${i}" type="url" value="${card.url}" placeholder="https://...">
-        <div class="btn-row">
-          <button class="btn btn-save" onclick="saveEdit(${i})">保存</button>
-          <button class="btn btn-cancel" onclick="cancelEdit(${i})">取消</button>
+        <div class="edit-mode">
+          <input class="input-field" id="edit-title-${i}" type="text" value="${escHtml(card.title)}" placeholder="标题">
+          <input class="input-field" id="edit-url-${i}" type="url" value="${escHtml(card.url)}" placeholder="https://...">
+          <div class="btn-row">
+            <button class="btn btn-save" onclick="saveEdit(${i})">保存</button>
+            <button class="btn btn-cancel" onclick="cancelEdit(${i})">取消</button>
+          </div>
         </div>
       </div>`;
     container.appendChild(div);
   });
+
+  // Init drag-and-drop
+  sortable = Sortable.create(container, {
+    handle: '.drag-handle',
+    animation: 150,
+    ghostClass: 'sortable-ghost',
+    dragClass: 'sortable-drag',
+    onEnd: onReorder
+  });
+}
+
+function escHtml(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function onReorder() {
+  // Read new order from DOM
+  const container = document.getElementById('cards-container');
+  const newOrder = Array.from(container.querySelectorAll('.card')).map(el => parseInt(el.dataset.idx));
+
+  const oldCards = [...cards];
+  const oldPush = { ...pushState };
+
+  // Reorder cards array
+  cards = newOrder.map(oldIdx => oldCards[oldIdx]);
+  saveCards();
+
+  // Rebuild Firebase with remapped indices
+  if (db) {
+    const newData = {};
+    cards.forEach((card, newIdx) => {
+      const oldIdx = newOrder[newIdx];
+      if (oldPush[oldIdx] !== undefined) {
+        newData[newIdx] = { visible: !!oldPush[oldIdx], title: card.title, url: card.url };
+      }
+    });
+    db.ref('workshop/links').set(newData);
+  }
+
+  renderCards();
 }
 
 function startEdit(i) {
@@ -170,9 +231,7 @@ function startEdit(i) {
   document.getElementById('edit-title-' + i).focus();
 }
 function cancelEdit(i) {
-  const card = document.getElementById('card-' + i);
-  card.classList.remove('editing');
-  // Restore input values
+  document.getElementById('card-' + i).classList.remove('editing');
   document.getElementById('edit-title-' + i).value = cards[i].title;
   document.getElementById('edit-url-' + i).value = cards[i].url;
 }
@@ -180,13 +239,17 @@ function saveEdit(i) {
   const title = document.getElementById('edit-title-' + i).value.trim();
   const url = document.getElementById('edit-url-' + i).value.trim();
   if (!title || !url) return alert('请填写标题和链接');
-  cards[i] = { title, url };
+  cards[i] = { ...cards[i], title, url };
   saveCards();
+  // If already pushed, sync to students immediately
+  if (db && pushState[i]) {
+    db.ref('workshop/links/' + i).set({ visible: true, title, url });
+  }
   renderCards();
 }
 
 function addCard() {
-  cards.push({ title: '', url: '' });
+  cards.push({ title: '', url: '', id: uid() });
   saveCards();
   renderCards();
   const i = cards.length - 1;
@@ -196,17 +259,17 @@ function addCard() {
 
 function deleteCard(i) {
   if (!confirm('确认删除此资源卡片？')) return;
-  if (db) db.ref('workshop/links/' + i).remove();
   cards.splice(i, 1);
-  // Reindex Firebase push states
-  if (db) {
-    const updates = {};
-    cards.forEach((c, idx) => {
-      if (pushState[idx] !== undefined) updates[idx] = { visible: !!pushState[idx], title: c.title, url: c.url };
-    });
-    db.ref('workshop/links').set(updates);
-  }
   saveCards();
+  if (db) {
+    // Rebuild Firebase to reflect removed card and shifted indices
+    const newData = {};
+    cards.forEach((c, idx) => {
+      const wasActive = pushState[idx >= i ? idx + 1 : idx];
+      if (wasActive) newData[idx] = { visible: true, title: c.title, url: c.url };
+    });
+    db.ref('workshop/links').set(newData);
+  }
   renderCards();
 }
 
@@ -222,10 +285,12 @@ function hideLink(i) {
 function resetAll() {
   if (!db) return alert('Firebase 未连接');
   if (!confirm('确认收回所有链接？')) return;
-  cards.forEach((c, i) => db.ref('workshop/links/' + i).set({ visible: false, title: c.title, url: c.url }));
+  const updates = {};
+  cards.forEach((c, i) => { updates[i] = { visible: false, title: c.title, url: c.url }; });
+  db.ref('workshop/links').set(updates);
 }
 
-// Firebase
+// Firebase init
 let db;
 try {
   firebase.initializeApp(firebaseConfig);
@@ -238,7 +303,7 @@ try {
   db.ref('workshop/links').on('value', snap => {
     const data = snap.val() || {};
     pushState = {};
-    Object.keys(data).forEach(k => { pushState[k] = data[k] && data[k].visible; });
+    Object.keys(data).forEach(k => { pushState[parseInt(k)] = data[k] && data[k].visible; });
     renderCards();
   });
 } catch(e) {
