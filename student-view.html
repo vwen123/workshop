@@ -6,6 +6,7 @@
 <title>NotebookLM 工作坊 · 课程资源</title>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: system-ui, sans-serif; background: #f7f7f3; min-height: 100vh; padding: 2rem 1.2rem; }
@@ -60,7 +61,7 @@
 
 <div id="links-list" class="links-list" style="display:none"></div>
 
-<button class="dl-btn" id="dl-btn" onclick="downloadMd()">⬇ 下载 Markdown 存档</button>
+<button class="dl-btn" id="dl-btn" onclick="downloadPDF()">⬇ 下载 PDF 存档</button>
 
 <div class="footer">页面自动更新 · 无需刷新</div>
 
@@ -138,25 +139,48 @@ db.ref('workshop/links').on('value', snap => {
   }
 });
 
-function downloadMd() {
+function downloadPDF() {
+  const btn = document.getElementById('dl-btn');
+  btn.textContent = '生成中...';
+  btn.disabled = true;
+
   const today = new Date().toLocaleDateString('zh-CN');
-  let md = `# 课程资源\n\nNotebookLM 工作坊 · ${today}\n\n---\n\n`;
+
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'width:170mm;font-family:system-ui,sans-serif;background:#fff;padding:0;margin:0;';
+
+  let html = `<div style="margin-bottom:10px;">
+    <div style="font-size:16px;font-weight:700;color:#1a1a1a;margin-bottom:2px;">课程资源</div>
+    <div style="font-size:11px;color:#999;">NotebookLM 工作坊 · ${today}</div>
+  </div>
+  <div style="border-top:1px solid #eee;margin-bottom:10px;"></div>`;
 
   document.querySelectorAll('.link-card').forEach((card) => {
     const title = card.querySelector('.link-title').childNodes[0].textContent.trim();
     const url = card.href;
     const num = card.querySelector('.link-num').textContent;
-    md += `### ${num} ${title}\n\n[${url}](${url})\n\n---\n\n`;
+    html += `<div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #f0f0f0;">
+      <div style="font-size:9px;color:#bbb;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:2px;">${num}</div>
+      <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:2px;">${title}</div>
+      <div style="font-size:10px;color:#2563eb;word-break:break-all;">${url}</div>
+    </div>`;
   });
 
-  md += `> 导出时间：${new Date().toLocaleString('zh-CN')}`;
+  html += `<div style="font-size:9px;color:#ccc;text-align:center;margin-top:6px;">导出时间：${new Date().toLocaleString('zh-CN')}</div>`;
+  wrap.innerHTML = html;
+  document.body.appendChild(wrap);
 
-  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = '工作坊课程资源_' + today.replace(/\//g, '-') + '.md';
-  a.click();
-  URL.revokeObjectURL(a.href);
+  html2pdf().set({
+    margin:        [8, 15, 10, 15],
+    filename:      '工作坊课程资源_' + today.replace(/\//g, '-') + '.pdf',
+    image:         { type: 'jpeg', quality: 0.98 },
+    html2canvas:   { scale: 2, useCORS: true, logging: false },
+    jsPDF:         { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  }).from(wrap).save().then(() => {
+    document.body.removeChild(wrap);
+    btn.textContent = '⬇ 下载 PDF 存档';
+    btn.disabled = false;
+  });
 }
 </script>
 </body>
