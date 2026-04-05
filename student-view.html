@@ -6,7 +6,6 @@
 <title>NotebookLM 工作坊 · 课程资源</title>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: system-ui, sans-serif; background: #f7f7f3; min-height: 100vh; padding: 2rem 1.2rem; }
@@ -42,11 +41,7 @@
   .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; display: inline-block; margin-right: 5px; }
   .footer { text-align: center; margin-top: 2rem; font-size: 0.78rem; color: #ccc; }
   .new-badge { background: #dcfce7; color: #166534; font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 20px; margin-left: 6px; vertical-align: middle; }
-  .action-row { display: none; gap: 0.6rem; margin-top: 1.2rem; }
-  .dl-btn { flex: 1; padding: 0.7rem; background: #1a1a1a; color: #fff; border: none; border-radius: 12px; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: background 0.15s; }
-  .dl-btn:active { background: #333; }
-  .dl-btn:disabled { background: #888; cursor: not-allowed; }
-  .copy-btn { flex: 1; padding: 0.7rem; background: #f0f0f0; color: #333; border: none; border-radius: 12px; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+  .copy-btn { display: none; width: 100%; margin-top: 1.2rem; padding: 0.7rem; background: #f0f0f0; color: #333; border: none; border-radius: 12px; font-size: 0.92rem; font-weight: 600; cursor: pointer; transition: background 0.15s; }
   .copy-btn:active { background: #e0e0e0; }
   .copy-btn.copied { background: #dcfce7; color: #166534; }
 </style>
@@ -65,10 +60,7 @@
 
 <div id="links-list" class="links-list" style="display:none"></div>
 
-<div class="action-row" id="action-row">
-  <button class="copy-btn" id="copy-btn" onclick="copyLinks()">📋 复制全部链接</button>
-  <button class="dl-btn" id="dl-btn" onclick="downloadPDF()">⬇ 下载 PDF</button>
-</div>
+<button class="copy-btn" id="copy-btn" onclick="copyLinks()">📋 复制全部链接</button>
 
 <div class="footer">页面自动更新 · 无需刷新</div>
 
@@ -138,11 +130,11 @@ db.ref('workshop/links').on('value', snap => {
   if (anyVisible) {
     waiting.style.display = 'none';
     list.style.display = 'flex';
-    document.getElementById('action-row').style.display = 'flex';
+    document.getElementById('copy-btn').style.display = 'block';
   } else {
     waiting.style.display = 'block';
     list.style.display = 'none';
-    document.getElementById('action-row').style.display = 'none';
+    document.getElementById('copy-btn').style.display = 'none';
   }
 });
 
@@ -162,52 +154,6 @@ function copyLinks() {
   });
 }
 
-function downloadPDF() {
-  const btn = document.getElementById('dl-btn');
-  btn.textContent = '生成中...';
-  btn.disabled = true;
-
-  const today = new Date().toLocaleDateString('zh-CN');
-
-  let html = `
-    <div style="margin-bottom:10px;">
-      <div style="font-size:16px;font-weight:700;color:#1a1a1a;margin-bottom:2px;">课程资源</div>
-      <div style="font-size:11px;color:#999;">NotebookLM 工作坊 · ${today}</div>
-    </div>
-    <div style="border-top:1px solid #eee;margin-bottom:10px;"></div>`;
-
-  document.querySelectorAll('.link-card').forEach(card => {
-    const title = card.querySelector('.link-title').childNodes[0].textContent.trim();
-    const url = card.href;
-    const num = card.querySelector('.link-num').textContent;
-    html += `<div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #f0f0f0;">
-      <div style="font-size:9px;color:#bbb;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:2px;">${num}</div>
-      <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:2px;">${title}</div>
-      <div style="font-size:10px;color:#2563eb;word-break:break-all;">${url}</div>
-    </div>`;
-  });
-
-  html += `<div style="font-size:9px;color:#ccc;text-align:center;margin-top:6px;">导出时间：${new Date().toLocaleString('zh-CN')}</div>`;
-
-  const wrap = document.createElement('div');
-  wrap.style.cssText = 'position:fixed;top:0;left:0;width:794px;padding:30px 36px;background:#fff;font-family:system-ui,sans-serif;z-index:9999;pointer-events:none;';
-  wrap.innerHTML = html;
-  document.body.appendChild(wrap);
-
-  setTimeout(() => {
-    html2pdf().set({
-      margin:      0,
-      filename:    '工作坊课程资源_' + today.replace(/\//g, '-') + '.pdf',
-      image:       { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, logging: false, scrollX: 0, scrollY: 0 },
-      jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    }).from(wrap).save().then(() => {
-      document.body.removeChild(wrap);
-      btn.textContent = '⬇ 下载 PDF';
-      btn.disabled = false;
-    });
-  }, 300);
-}
 </script>
 </body>
 </html>
