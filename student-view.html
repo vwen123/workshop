@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NotebookLM 工作坊 · 课程资源</title>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, sans-serif; background: #f7f7f3; min-height: 100vh; padding: 2rem 1.2rem; }
+  .header { text-align: center; margin-bottom: 2rem; }
+  .header h1 { font-size: 1.25rem; font-weight: 700; color: #1a1a1a; }
+  .header p { font-size: 0.88rem; color: #888; margin-top: 0.3rem; }
+  .waiting { text-align: center; padding: 3rem 1rem; }
+  .waiting-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .waiting p { color: #aaa; font-size: 0.9rem; line-height: 1.6; }
+  .links-list { display: flex; flex-direction: column; gap: 0.85rem; }
+  .link-card { background: #fff; border-radius: 14px; border: 1px solid #e8e8e8; padding: 1.1rem 1.2rem; text-decoration: none; display: flex; align-items: center; gap: 1rem; transition: transform 0.12s, box-shadow 0.12s; animation: slideIn 0.3s ease; }
+  .link-card:active { transform: scale(0.98); }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .link-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+  .icon-0 { background: #e8f5e9; }
+  .icon-1 { background: #fce4ec; }
+  .icon-2 { background: #e3f2fd; }
+  .icon-3 { background: #fff8e1; }
+  .link-info { flex: 1; min-width: 0; }
+  .link-num { font-size: 0.7rem; font-weight: 700; color: #bbb; text-transform: uppercase; letter-spacing: 0.05em; }
+  .link-title { font-size: 0.98rem; font-weight: 600; color: #1a1a1a; margin-top: 0.1rem; }
+  .link-url { font-size: 0.76rem; color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 0.15rem; }
+  .arrow { color: #ccc; font-size: 1.1rem; flex-shrink: 0; }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; display: inline-block; margin-right: 5px; }
+  .footer { text-align: center; margin-top: 2rem; font-size: 0.78rem; color: #ccc; }
+  .new-badge { background: #dcfce7; color: #166534; font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 20px; margin-left: 6px; vertical-align: middle; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📚 课程资源</h1>
+  <p><span class="status-dot" id="conn-dot" style="background:#ccc"></span><span id="conn-text">正在连接...</span></p>
+</div>
+
+<div id="waiting" class="waiting">
+  <div class="waiting-icon">⏳</div>
+  <p>等待老师推送链接<br>讲到哪里，这里就出现哪条～</p>
+</div>
+
+<div id="links-list" class="links-list" style="display:none"></div>
+
+<div class="footer">页面自动更新 · 无需刷新</div>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDemo-ReplaceWithYours",
+  authDomain: "vwenbcclass.firebaseapp.com",
+  databaseURL: "https://vwenbcclass-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "vwenbcclass",
+  storageBucket: "vwenbcclass.appspot.com",
+  messagingSenderId: "000000000000",
+  appId: "1:000000000000:web:0000000000000000"
+};
+
+const icons = ['🛠️','🎨','📝','📂'];
+const iconClass = ['icon-0','icon-1','icon-2','icon-3'];
+const shortUrls = [
+  'sites.google.com/view/aieducation123/',
+  'padlet.com/vivianeiwen123/...',
+  'forms.gle/LTirsLFThXZRiruVA',
+  'drive.google.com/file/...'
+];
+
+let seen = {};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+db.ref('.info/connected').on('value', snap => {
+  const ok = snap.val();
+  document.getElementById('conn-dot').style.background = ok ? '#22c55e' : '#ef4444';
+  document.getElementById('conn-text').textContent = ok ? '已连接，实时同步' : '连接中断';
+});
+
+db.ref('workshop/links').on('value', snap => {
+  const data = snap.val() || {};
+  const list = document.getElementById('links-list');
+  const waiting = document.getElementById('waiting');
+  list.innerHTML = '';
+  let anyVisible = false;
+
+  for (let i = 0; i <= 3; i++) {
+    const item = data[i];
+    if (item && item.visible) {
+      anyVisible = true;
+      const isNew = !seen[i];
+      seen[i] = true;
+      const a = document.createElement('a');
+      a.className = 'link-card';
+      a.href = item.url;
+      a.target = '_blank';
+      a.innerHTML = `
+        <div class="link-icon ${iconClass[i]}">${icons[i]}</div>
+        <div class="link-info">
+          <div class="link-num">资源 ${i+1}</div>
+          <div class="link-title">${item.title}${isNew ? '<span class="new-badge">NEW</span>' : ''}</div>
+          <div class="link-url">${shortUrls[i]}</div>
+        </div>
+        <div class="arrow">›</div>`;
+      list.appendChild(a);
+    } else {
+      seen[i] = false;
+    }
+  }
+
+  if (anyVisible) {
+    waiting.style.display = 'none';
+    list.style.display = 'flex';
+  } else {
+    waiting.style.display = 'block';
+    list.style.display = 'none';
+  }
+});
+</script>
+</body>
+</html>

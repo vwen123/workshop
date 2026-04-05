@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>讲师控制台 — NotebookLM 工作坊</title>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, sans-serif; background: #f5f5f0; min-height: 100vh; padding: 1.5rem 1rem; }
+  h1 { font-size: 1.1rem; font-weight: 600; color: #222; margin-bottom: 0.25rem; }
+  .sub { font-size: 0.85rem; color: #777; margin-bottom: 1.5rem; }
+  .card { background: #fff; border-radius: 14px; border: 1px solid #e8e8e8; padding: 1.1rem 1.2rem; margin-bottom: 1rem; }
+  .card-label { font-size: 0.75rem; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.35rem; }
+  .card-title { font-size: 1rem; font-weight: 600; color: #222; margin-bottom: 0.3rem; }
+  .card-url { font-size: 0.78rem; color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.9rem; }
+  .btn-row { display: flex; gap: 0.5rem; }
+  .btn { flex: 1; padding: 0.6rem 0.75rem; border-radius: 9px; border: none; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .btn-push { background: #1a1a1a; color: #fff; }
+  .btn-push:active { transform: scale(0.97); background: #333; }
+  .btn-push.active { background: #0a7c4e; }
+  .btn-hide { background: #f0f0f0; color: #666; }
+  .btn-hide:active { transform: scale(0.97); }
+  .status-bar { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; background: #fff; border-radius: 10px; border: 1px solid #e8e8e8; margin-bottom: 1.5rem; font-size: 0.85rem; color: #555; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; flex-shrink: 0; }
+  .dot.connected { background: #22c55e; }
+  .dot.error { background: #ef4444; }
+  .badge { display: inline-block; font-size: 0.7rem; font-weight: 600; padding: 2px 8px; border-radius: 20px; margin-left: 0.5rem; }
+  .badge-live { background: #dcfce7; color: #166534; }
+  .badge-hidden { background: #f3f4f6; color: #6b7280; }
+  .reset-btn { width: 100%; padding: 0.65rem; background: #fff3f3; color: #c0392b; border: 1px solid #fca5a5; border-radius: 10px; font-size: 0.88rem; font-weight: 600; cursor: pointer; margin-top: 0.5rem; }
+  .reset-btn:active { transform: scale(0.98); }
+  .section-title { font-size: 0.75rem; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+</style>
+</head>
+<body>
+
+<h1>讲师控制台</h1>
+<p class="sub">NotebookLM 工作坊 · 讲到哪里，推哪条链接</p>
+
+<div class="status-bar">
+  <div class="dot" id="dot"></div>
+  <span id="status-text">正在连接...</span>
+</div>
+
+<div class="section-title">链接推送</div>
+
+<div class="card" id="card-0">
+  <div class="card-label">资源 1</div>
+  <div class="card-title">AI 备课与风格指令生成器 <span class="badge badge-hidden" id="badge-0">未推送</span></div>
+  <div class="card-url">sites.google.com/view/aieducation123/</div>
+  <div class="btn-row">
+    <button class="btn btn-push" onclick="pushLink(0)">推送给学员</button>
+    <button class="btn btn-hide" onclick="hideLink(0)">收回</button>
+  </div>
+</div>
+
+<div class="card" id="card-1">
+  <div class="card-label">资源 2</div>
+  <div class="card-title">作品墙 <span class="badge badge-hidden" id="badge-1">未推送</span></div>
+  <div class="card-url">padlet.com/vivianeiwen123/notebooklm...</div>
+  <div class="btn-row">
+    <button class="btn btn-push" onclick="pushLink(1)">推送给学员</button>
+    <button class="btn btn-hide" onclick="hideLink(1)">收回</button>
+  </div>
+</div>
+
+<div class="card" id="card-2">
+  <div class="card-label">资源 3</div>
+  <div class="card-title">课程回馈 <span class="badge badge-hidden" id="badge-2">未推送</span></div>
+  <div class="card-url">forms.gle/LTirsLFThXZRiruVA</div>
+  <div class="btn-row">
+    <button class="btn btn-push" onclick="pushLink(2)">推送给学员</button>
+    <button class="btn btn-hide" onclick="hideLink(2)">收回</button>
+  </div>
+</div>
+
+<div class="card" id="card-3">
+  <div class="card-label">资源 4</div>
+  <div class="card-title">Google Drive 文件 <span class="badge badge-hidden" id="badge-3">未推送</span></div>
+  <div class="card-url">drive.google.com/file/d/1HZek5Is...</div>
+  <div class="btn-row">
+    <button class="btn btn-push" onclick="pushLink(3)">推送给学员</button>
+    <button class="btn btn-hide" onclick="hideLink(3)">收回</button>
+  </div>
+</div>
+
+<button class="reset-btn" onclick="resetAll()">重置全部（收回所有链接）</button>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDemo-ReplaceWithYours",
+  authDomain: "vwenbcclass.firebaseapp.com",
+  databaseURL: "https://vwenbcclass-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "vwenbcclass",
+  storageBucket: "vwenbcclass.appspot.com",
+  messagingSenderId: "000000000000",
+  appId: "1:000000000000:web:0000000000000000"
+};
+
+const links = [
+  { title: "AI 备课与风格指令生成器", url: "https://sites.google.com/view/aieducation123/" },
+  { title: "作品墙", url: "https://padlet.com/vivianeiwen123/notebooklm-30-1-7m5rga7gffprm9t7" },
+  { title: "课程回馈", url: "https://forms.gle/LTirsLFThXZRiruVA" },
+  { title: "Google Drive 文件", url: "https://drive.google.com/file/d/1HZek5IsbZ22RAxPyMyGg_XeLAhkggT7H/view" }
+];
+
+let db;
+try {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.database();
+  db.ref('.info/connected').on('value', snap => {
+    const connected = snap.val();
+    document.getElementById('dot').className = 'dot ' + (connected ? 'connected' : 'error');
+    document.getElementById('status-text').textContent = connected ? 'Firebase 已连接，学员端实时同步' : '连接中断，请检查网络';
+  });
+  db.ref('workshop/links').on('value', snap => {
+    const data = snap.val() || {};
+    links.forEach((_, i) => {
+      const active = data[i] && data[i].visible;
+      const badge = document.getElementById('badge-' + i);
+      badge.textContent = active ? '已推送' : '未推送';
+      badge.className = 'badge ' + (active ? 'badge-live' : 'badge-hidden');
+      document.querySelector(`#card-${i} .btn-push`).className = 'btn btn-push' + (active ? ' active' : '');
+    });
+  });
+} catch(e) {
+  document.getElementById('dot').className = 'dot error';
+  document.getElementById('status-text').textContent = '请先配置 Firebase（见说明）';
+}
+
+function pushLink(i) {
+  if (!db) return alert('Firebase 未连接');
+  db.ref('workshop/links/' + i).set({ visible: true, title: links[i].title, url: links[i].url });
+}
+function hideLink(i) {
+  if (!db) return alert('Firebase 未连接');
+  db.ref('workshop/links/' + i).set({ visible: false, title: links[i].title, url: links[i].url });
+}
+function resetAll() {
+  if (!db) return alert('Firebase 未连接');
+  if (confirm('确认收回所有链接？')) {
+    links.forEach((link, i) => {
+      db.ref('workshop/links/' + i).set({ visible: false, title: link.title, url: link.url });
+    });
+  }
+}
+</script>
+</body>
+</html>
