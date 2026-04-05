@@ -67,6 +67,20 @@
   .reset-btn { width: 100%; padding: 0.62rem; background: #fff3f3; color: #c0392b; border: 1px solid #fca5a5; border-radius: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
   .reset-btn:active { transform: scale(0.98); }
   .section-title { font-size: 0.72rem; font-weight: 700; color: #bbb; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+
+  /* Student link card */
+  .student-card { background: #fff; border-radius: 14px; border: 1px solid #e8e8e8; padding: 1rem 1.1rem; margin-bottom: 1.5rem; }
+  .student-card-title { font-size: 0.72rem; font-weight: 700; color: #bbb; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+  .student-card-inner { display: flex; gap: 1rem; align-items: flex-start; }
+  .qr-img { width: 90px; height: 90px; border-radius: 8px; border: 1px solid #eee; flex-shrink: 0; }
+  .student-link-info { flex: 1; min-width: 0; }
+  .student-link-label { font-size: 0.82rem; font-weight: 600; color: #222; margin-bottom: 0.3rem; }
+  .student-link-url { font-size: 0.73rem; color: #aaa; word-break: break-all; margin-bottom: 0.7rem; line-height: 1.5; }
+  .link-btn-row { display: flex; gap: 0.5rem; }
+  .btn-copy { flex: 1; padding: 0.52rem 0.65rem; border-radius: 9px; border: none; background: #1a1a1a; color: #fff; font-size: 0.84rem; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+  .btn-copy:active { background: #333; }
+  .btn-copy.copied { background: #0a7c4e; }
+  .btn-open { flex: 1; padding: 0.52rem 0.65rem; border-radius: 9px; border: 1px solid #e0e0e0; background: #f9f9f9; color: #555; font-size: 0.84rem; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; display: block; }
 </style>
 </head>
 <body>
@@ -77,6 +91,21 @@
 <div class="status-bar">
   <div class="dot" id="dot"></div>
   <span id="status-text">正在连接...</span>
+</div>
+
+<div class="student-card">
+  <div class="student-card-title">学员端链接</div>
+  <div class="student-card-inner">
+    <img class="qr-img" id="qr-img" src="" alt="QR Code">
+    <div class="student-link-info">
+      <div class="student-link-label">📱 扫码或分享链接给学员</div>
+      <div class="student-link-url" id="student-url-text"></div>
+      <div class="link-btn-row">
+        <button class="btn-copy" id="copy-btn" onclick="copyStudentLink()">复制链接</button>
+        <a class="btn-open" id="open-btn" href="" target="_blank">开启预览</a>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="section-title">链接推送</div>
@@ -95,6 +124,24 @@ const firebaseConfig = {
   messagingSenderId: "000000000000",
   appId: "1:000000000000:web:0000000000000000"
 };
+
+// Student view URL
+const STUDENT_URL = 'https://vwen123.github.io/workshop/student-view.html';
+(function initStudentLink() {
+  document.getElementById('student-url-text').textContent = STUDENT_URL;
+  document.getElementById('open-btn').href = STUDENT_URL;
+  document.getElementById('qr-img').src =
+    'https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=4&data=' + encodeURIComponent(STUDENT_URL);
+})();
+
+function copyStudentLink() {
+  navigator.clipboard.writeText(STUDENT_URL).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✓ 已复制';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '复制链接'; btn.classList.remove('copied'); }, 2000);
+  });
+}
 
 const DEFAULT_CARDS = [
   { title: "AI 备课与风格指令生成器", url: "https://sites.google.com/view/aieducation123/" },
