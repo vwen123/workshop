@@ -13,10 +13,6 @@
   h1 { font-size: 1.1rem; font-weight: 600; color: #222; margin-bottom: 0.25rem; }
   .sub { font-size: 0.85rem; color: #777; margin-bottom: 1.5rem; }
 
-  .status-bar { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; background: #fff; border-radius: 10px; border: 1px solid #e8e8e8; margin-bottom: 1.5rem; font-size: 0.85rem; color: #555; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; flex-shrink: 0; }
-  .dot.connected { background: #22c55e; }
-  .dot.error { background: #ef4444; }
 
   /* Card */
   .card { background: #fff; border-radius: 14px; border: 1px solid #e8e8e8; padding: 1rem 1.1rem 1rem 0.6rem; margin-bottom: 0.85rem; display: flex; gap: 0.5rem; align-items: flex-start; transition: box-shadow 0.15s; }
@@ -77,10 +73,6 @@
 <h1>工作坊推送链接平台</h1>
 <p class="sub">讲到哪里，推哪条链接</p>
 
-<div class="status-bar">
-  <div class="dot" id="dot"></div>
-  <span id="status-text">正在连接...</span>
-</div>
 
 <a class="btn-student" href="https://vwen123.github.io/workshop/student-view.html" target="_blank">学员端链接 ↗</a>
 
@@ -301,11 +293,6 @@ let db;
 try {
   firebase.initializeApp(firebaseConfig);
   db = firebase.database();
-  db.ref('.info/connected').on('value', snap => {
-    const ok = snap.val();
-    document.getElementById('dot').className = 'dot ' + (ok ? 'connected' : 'error');
-    document.getElementById('status-text').textContent = ok ? 'Firebase 已连接，学员端实时同步' : '连接中断，请检查网络';
-  });
   db.ref('workshop/links').on('value', snap => {
     const data = snap.val() || {};
     pushState = {};
@@ -313,8 +300,6 @@ try {
     renderCards();
   });
 } catch(e) {
-  document.getElementById('dot').className = 'dot error';
-  document.getElementById('status-text').textContent = '请先配置 Firebase';
   renderCards();
 }
 </script>
