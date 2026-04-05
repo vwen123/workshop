@@ -24,6 +24,11 @@
   .icon-1 { background: #fce4ec; }
   .icon-2 { background: #e3f2fd; }
   .icon-3 { background: #fff8e1; }
+  .icon-4 { background: #f3e5f5; }
+  .icon-5 { background: #e0f2f1; }
+  .icon-6 { background: #fbe9e7; }
+  .icon-7 { background: #e8eaf6; }
+  .icon-8 { background: #f5f5f5; }
   .link-info { flex: 1; min-width: 0; }
   .link-num { font-size: 0.7rem; font-weight: 700; color: #bbb; text-transform: uppercase; letter-spacing: 0.05em; }
   .link-title { font-size: 0.98rem; font-weight: 600; color: #1a1a1a; margin-top: 0.1rem; }
@@ -43,7 +48,7 @@
 
 <div id="waiting" class="waiting">
   <div class="waiting-icon">⏳</div>
-  <p>等待老师推送链接<br>讲到哪里，这里就出现哪条～</p>
+  <p>等待老师推送链接</p>
 </div>
 
 <div id="links-list" class="links-list" style="display:none"></div>
@@ -61,14 +66,13 @@ const firebaseConfig = {
   appId: "1:000000000000:web:0000000000000000"
 };
 
-const icons = ['🛠️','🎨','📝','📂'];
-const iconClass = ['icon-0','icon-1','icon-2','icon-3'];
-const shortUrls = [
-  'sites.google.com/view/aieducation123/',
-  'padlet.com/vivianeiwen123/...',
-  'forms.gle/LTirsLFThXZRiruVA',
-  'drive.google.com/file/...'
-];
+const icons = ['🛠️','🎨','📝','📂','🎴','✨','📄','🎬','🔗'];
+const iconClass = ['icon-0','icon-1','icon-2','icon-3','icon-4','icon-5','icon-6','icon-7','icon-8'];
+
+function shortUrl(url) {
+  try { const u = new URL(url); return u.hostname + u.pathname.slice(0, 30) + (u.pathname.length > 30 ? '...' : ''); }
+  catch { return url.slice(0, 40); }
+}
 
 let seen = {};
 firebase.initializeApp(firebaseConfig);
@@ -87,7 +91,7 @@ db.ref('workshop/links').on('value', snap => {
   list.innerHTML = '';
   let anyVisible = false;
 
-  for (let i = 0; i <= 3; i++) {
+  for (let i = 0; i <= 8; i++) {
     const item = data[i];
     if (item && item.visible) {
       anyVisible = true;
@@ -102,7 +106,7 @@ db.ref('workshop/links').on('value', snap => {
         <div class="link-info">
           <div class="link-num">资源 ${i+1}</div>
           <div class="link-title">${item.title}${isNew ? '<span class="new-badge">NEW</span>' : ''}</div>
-          <div class="link-url">${shortUrls[i]}</div>
+          <div class="link-url">${shortUrl(item.url)}</div>
         </div>
         <div class="arrow">›</div>`;
       list.appendChild(a);

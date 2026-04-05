@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>讲师控制台 — NotebookLM 工作坊</title>
+<title>工作坊推送链接平台</title>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 <style>
@@ -12,16 +12,21 @@
   h1 { font-size: 1.1rem; font-weight: 600; color: #222; margin-bottom: 0.25rem; }
   .sub { font-size: 0.85rem; color: #777; margin-bottom: 1.5rem; }
   .card { background: #fff; border-radius: 14px; border: 1px solid #e8e8e8; padding: 1.1rem 1.2rem; margin-bottom: 1rem; }
-  .card-label { font-size: 0.75rem; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.35rem; }
+  .card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 0.3rem; }
+  .card-label { font-size: 0.75rem; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 0.04em; }
   .card-title { font-size: 1rem; font-weight: 600; color: #222; margin-bottom: 0.3rem; }
   .card-url { font-size: 0.78rem; color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.9rem; }
   .btn-row { display: flex; gap: 0.5rem; }
   .btn { flex: 1; padding: 0.6rem 0.75rem; border-radius: 9px; border: none; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
   .btn-push { background: #1a1a1a; color: #fff; }
-  .btn-push:active { transform: scale(0.97); background: #333; }
+  .btn-push:active { transform: scale(0.97); }
   .btn-push.active { background: #0a7c4e; }
   .btn-hide { background: #f0f0f0; color: #666; }
   .btn-hide:active { transform: scale(0.97); }
+  .btn-del { flex: 0; padding: 0.6rem 0.75rem; border-radius: 9px; border: none; background: #fff3f3; color: #c0392b; font-size: 0.88rem; cursor: pointer; transition: all 0.15s; }
+  .btn-del:active { transform: scale(0.97); }
+  .del-icon { background: none; border: none; cursor: pointer; font-size: 1rem; color: #ccc; padding: 0; line-height: 1; transition: color 0.15s; }
+  .del-icon:hover { color: #c0392b; }
   .status-bar { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; background: #fff; border-radius: 10px; border: 1px solid #e8e8e8; margin-bottom: 1.5rem; font-size: 0.85rem; color: #555; }
   .dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; flex-shrink: 0; }
   .dot.connected { background: #22c55e; }
@@ -31,13 +36,18 @@
   .badge-hidden { background: #f3f4f6; color: #6b7280; }
   .reset-btn { width: 100%; padding: 0.65rem; background: #fff3f3; color: #c0392b; border: 1px solid #fca5a5; border-radius: 10px; font-size: 0.88rem; font-weight: 600; cursor: pointer; margin-top: 0.5rem; }
   .reset-btn:active { transform: scale(0.98); }
-  .section-title { font-size: 0.75rem; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+  .section-title { font-size: 0.75rem; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; margin-top: 1.5rem; }
+  .custom-card { background: #fff; border-radius: 14px; border: 2px dashed #d0d0d0; padding: 1.1rem 1.2rem; margin-bottom: 1rem; }
+  .input-field { width: 100%; padding: 0.55rem 0.75rem; border: 1px solid #e0e0e0; border-radius: 9px; font-size: 0.9rem; color: #222; background: #fafafa; margin-bottom: 0.6rem; outline: none; }
+  .input-field:focus { border-color: #1a1a1a; background: #fff; }
+  .input-field::placeholder { color: #bbb; }
+  .deleted { display: none !important; }
 </style>
 </head>
 <body>
 
-<h1>讲师控制台</h1>
-<p class="sub">NotebookLM 工作坊 · 讲到哪里，推哪条链接</p>
+<h1>工作坊推送链接平台</h1>
+<p class="sub">讲到哪里，推哪条链接</p>
 
 <div class="status-bar">
   <div class="dot" id="dot"></div>
@@ -47,8 +57,11 @@
 <div class="section-title">链接推送</div>
 
 <div class="card" id="card-0">
-  <div class="card-label">资源 1</div>
-  <div class="card-title">AI 备课与风格指令生成器 <span class="badge badge-hidden" id="badge-0">未推送</span></div>
+  <div class="card-header">
+    <div class="card-label">资源 1 <span class="badge badge-hidden" id="badge-0">未推送</span></div>
+    <button class="del-icon" onclick="deleteLink(0)" title="删除">✕</button>
+  </div>
+  <div class="card-title">AI 备课与风格指令生成器</div>
   <div class="card-url">sites.google.com/view/aieducation123/</div>
   <div class="btn-row">
     <button class="btn btn-push" onclick="pushLink(0)">推送给学员</button>
@@ -57,8 +70,11 @@
 </div>
 
 <div class="card" id="card-1">
-  <div class="card-label">资源 2</div>
-  <div class="card-title">作品墙 <span class="badge badge-hidden" id="badge-1">未推送</span></div>
+  <div class="card-header">
+    <div class="card-label">资源 2 <span class="badge badge-hidden" id="badge-1">未推送</span></div>
+    <button class="del-icon" onclick="deleteLink(1)" title="删除">✕</button>
+  </div>
+  <div class="card-title">作品墙</div>
   <div class="card-url">padlet.com/vivianeiwen123/notebooklm...</div>
   <div class="btn-row">
     <button class="btn btn-push" onclick="pushLink(1)">推送给学员</button>
@@ -67,8 +83,11 @@
 </div>
 
 <div class="card" id="card-2">
-  <div class="card-label">资源 3</div>
-  <div class="card-title">课程回馈 <span class="badge badge-hidden" id="badge-2">未推送</span></div>
+  <div class="card-header">
+    <div class="card-label">资源 3 <span class="badge badge-hidden" id="badge-2">未推送</span></div>
+    <button class="del-icon" onclick="deleteLink(2)" title="删除">✕</button>
+  </div>
+  <div class="card-title">课程回馈</div>
   <div class="card-url">forms.gle/LTirsLFThXZRiruVA</div>
   <div class="btn-row">
     <button class="btn btn-push" onclick="pushLink(2)">推送给学员</button>
@@ -77,12 +96,82 @@
 </div>
 
 <div class="card" id="card-3">
-  <div class="card-label">资源 4</div>
-  <div class="card-title">Google Drive 文件 <span class="badge badge-hidden" id="badge-3">未推送</span></div>
+  <div class="card-header">
+    <div class="card-label">资源 4 <span class="badge badge-hidden" id="badge-3">未推送</span></div>
+    <button class="del-icon" onclick="deleteLink(3)" title="删除">✕</button>
+  </div>
+  <div class="card-title">Google Drive 文件</div>
   <div class="card-url">drive.google.com/file/d/1HZek5Is...</div>
   <div class="btn-row">
     <button class="btn btn-push" onclick="pushLink(3)">推送给学员</button>
     <button class="btn btn-hide" onclick="hideLink(3)">收回</button>
+  </div>
+</div>
+
+<div class="card" id="card-4">
+  <div class="card-header">
+    <div class="card-label">资源 5 <span class="badge badge-hidden" id="badge-4">未推送</span></div>
+    <button class="del-icon" onclick="deleteLink(4)" title="删除">✕</button>
+  </div>
+  <div class="card-title">DeckEdit 简报工具</div>
+  <div class="card-url">deckedit.com/zh-Hans</div>
+  <div class="btn-row">
+    <button class="btn btn-push" onclick="pushLink(4)">推送给学员</button>
+    <button class="btn btn-hide" onclick="hideLink(4)">收回</button>
+  </div>
+</div>
+
+<div class="card" id="card-5">
+  <div class="card-header">
+    <div class="card-label">资源 6 <span class="badge badge-hidden" id="badge-5">未推送</span></div>
+    <button class="del-icon" onclick="deleteLink(5)" title="删除">✕</button>
+  </div>
+  <div class="card-title">Magic Eraser 背景消除</div>
+  <div class="card-url">magiceraser.org</div>
+  <div class="btn-row">
+    <button class="btn btn-push" onclick="pushLink(5)">推送给学员</button>
+    <button class="btn btn-hide" onclick="hideLink(5)">收回</button>
+  </div>
+</div>
+
+<div class="card" id="card-6">
+  <div class="card-header">
+    <div class="card-label">资源 7 <span class="badge badge-hidden" id="badge-6">未推送</span></div>
+    <button class="del-icon" onclick="deleteLink(6)" title="删除">✕</button>
+  </div>
+  <div class="card-title">课程讲义（Google 文件）</div>
+  <div class="card-url">docs.google.com/document/...</div>
+  <div class="btn-row">
+    <button class="btn btn-push" onclick="pushLink(6)">推送给学员</button>
+    <button class="btn btn-hide" onclick="hideLink(6)">收回</button>
+  </div>
+</div>
+
+<div class="card" id="card-7">
+  <div class="card-header">
+    <div class="card-label">资源 8 <span class="badge badge-hidden" id="badge-7">未推送</span></div>
+    <button class="del-icon" onclick="deleteLink(7)" title="删除">✕</button>
+  </div>
+  <div class="card-title">YouTube to NotebookLM 扩展</div>
+  <div class="card-url">chromewebstore.google.com/detail/youtube-to-notebooklm/...</div>
+  <div class="btn-row">
+    <button class="btn btn-push" onclick="pushLink(7)">推送给学员</button>
+    <button class="btn btn-hide" onclick="hideLink(7)">收回</button>
+  </div>
+</div>
+
+<div class="section-title">自定义链接</div>
+
+<div class="custom-card" id="card-8">
+  <div class="card-header">
+    <div class="card-label">临时资源 <span class="badge badge-hidden" id="badge-8">未推送</span></div>
+    <button class="del-icon" onclick="deleteLink(8)" title="删除">✕</button>
+  </div>
+  <input class="input-field" id="custom-title" type="text" placeholder="标题（例如：参考网站）">
+  <input class="input-field" id="custom-url" type="url" placeholder="https://...">
+  <div class="btn-row">
+    <button class="btn btn-push" onclick="pushCustom()">推送给学员</button>
+    <button class="btn btn-hide" onclick="hideLink(8)">收回</button>
   </div>
 </div>
 
@@ -103,7 +192,11 @@ const links = [
   { title: "AI 备课与风格指令生成器", url: "https://sites.google.com/view/aieducation123/" },
   { title: "作品墙", url: "https://padlet.com/vivianeiwen123/notebooklm-30-1-7m5rga7gffprm9t7" },
   { title: "课程回馈", url: "https://forms.gle/LTirsLFThXZRiruVA" },
-  { title: "Google Drive 文件", url: "https://drive.google.com/file/d/1HZek5IsbZ22RAxPyMyGg_XeLAhkggT7H/view" }
+  { title: "Google Drive 文件", url: "https://drive.google.com/file/d/1HZek5IsbZ22RAxPyMyGg_XeLAhkggT7H/view" },
+  { title: "DeckEdit 简报工具", url: "https://deckedit.com/zh-Hans" },
+  { title: "Magic Eraser 背景消除", url: "https://magiceraser.org" },
+  { title: "课程讲义（Google 文件）", url: "https://docs.google.com/document/d/1owwM0gpp5N6WpvhNo0j6VJnyWYu0o-rnsqZReGruZ6g/edit?tab=t.0" },
+  { title: "YouTube to NotebookLM 扩展", url: "https://chromewebstore.google.com/detail/youtube-to-notebooklm/kobncfkmjelbefaoohoblamnbackjggk" }
 ];
 
 let db;
@@ -117,13 +210,15 @@ try {
   });
   db.ref('workshop/links').on('value', snap => {
     const data = snap.val() || {};
-    links.forEach((_, i) => {
-      const active = data[i] && data[i].visible;
+    for (let i = 0; i <= 8; i++) {
       const badge = document.getElementById('badge-' + i);
+      if (!badge) continue;
+      const active = data[i] && data[i].visible;
       badge.textContent = active ? '已推送' : '未推送';
       badge.className = 'badge ' + (active ? 'badge-live' : 'badge-hidden');
-      document.querySelector(`#card-${i} .btn-push`).className = 'btn btn-push' + (active ? ' active' : '');
-    });
+      const pushBtn = document.querySelector(`#card-${i} .btn-push`);
+      if (pushBtn) pushBtn.className = 'btn btn-push' + (active ? ' active' : '');
+    }
   });
 } catch(e) {
   document.getElementById('dot').className = 'dot error';
@@ -136,14 +231,31 @@ function pushLink(i) {
 }
 function hideLink(i) {
   if (!db) return alert('Firebase 未连接');
-  db.ref('workshop/links/' + i).set({ visible: false, title: links[i].title, url: links[i].url });
+  const link = links[i] || { title: '', url: '' };
+  db.ref('workshop/links/' + i).set({ visible: false, title: link.title, url: link.url });
+}
+function deleteLink(i) {
+  if (!db) return alert('Firebase 未连接');
+  if (!confirm('确认删除此条链接？（仅从学员端移除，讲师面板仍保留）')) return;
+  db.ref('workshop/links/' + i).remove();
+  const badge = document.getElementById('badge-' + i);
+  if (badge) { badge.textContent = '未推送'; badge.className = 'badge badge-hidden'; }
+  const pushBtn = document.querySelector(`#card-${i} .btn-push`);
+  if (pushBtn) pushBtn.className = 'btn btn-push';
+}
+function pushCustom() {
+  if (!db) return alert('Firebase 未连接');
+  const title = document.getElementById('custom-title').value.trim();
+  const url = document.getElementById('custom-url').value.trim();
+  if (!title || !url) return alert('请填写标题和链接');
+  db.ref('workshop/links/8').set({ visible: true, title, url });
 }
 function resetAll() {
   if (!db) return alert('Firebase 未连接');
   if (confirm('确认收回所有链接？')) {
-    links.forEach((link, i) => {
-      db.ref('workshop/links/' + i).set({ visible: false, title: link.title, url: link.url });
-    });
+    for (let i = 0; i <= 8; i++) {
+      db.ref('workshop/links/' + i).remove();
+    }
   }
 }
 </script>
