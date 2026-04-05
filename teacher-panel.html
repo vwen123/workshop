@@ -274,6 +274,10 @@ function deleteCard(i) {
 function pushLink(i) {
   if (!db) return alert('Firebase 未连接');
   if (!cards[i].title || !cards[i].url) return alert('请先填写标题和链接');
+  // Set session start timestamp on first push
+  db.ref('workshop/sessionStart').once('value', snap => {
+    if (!snap.val()) db.ref('workshop/sessionStart').set(firebase.database.ServerValue.TIMESTAMP);
+  });
   db.ref('workshop/links/' + i).set({ visible: true, title: cards[i].title, url: cards[i].url });
 }
 function hideLink(i) {
@@ -293,6 +297,18 @@ let db;
 try {
   firebase.initializeApp(firebaseConfig);
   db = firebase.database();
+
+  // 24-hour auto-clear check
+  db.ref('workshop/sessionStart').once('value', snap => {
+    const start = snap.val();
+    if (start && Date.now() - start > 24 * 60 * 60 * 1000) {
+      const updates = {};
+      cards.forEach((c, i) => { updates[i] = { visible: false, title: c.title, url: c.url }; });
+      db.ref('workshop/links').set(updates);
+      db.ref('workshop/sessionStart').remove();
+    }
+  });
+
   db.ref('workshop/links').on('value', snap => {
     const data = snap.val() || {};
     pushState = {};

@@ -11,7 +11,7 @@
   body { font-family: system-ui, sans-serif; background: #f7f7f3; min-height: 100vh; padding: 2rem 1.2rem; }
   .header { text-align: center; margin-bottom: 2rem; }
   .header h1 { font-size: 1.25rem; font-weight: 700; color: #1a1a1a; }
-  .header p { font-size: 0.88rem; color: #888; margin-top: 0.3rem; }
+  .viewer-count { font-size: 0.82rem; color: #aaa; margin-top: 0.3rem; min-height: 1.2em; }
   .waiting { text-align: center; padding: 3rem 1rem; }
   .waiting-icon { font-size: 2.5rem; margin-bottom: 1rem; }
   .waiting p { color: #aaa; font-size: 0.9rem; line-height: 1.6; }
@@ -38,19 +38,19 @@
   .link-title { font-size: 0.98rem; font-weight: 600; color: #1a1a1a; margin-top: 0.1rem; }
   .link-url { font-size: 0.76rem; color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 0.15rem; }
   .arrow { color: #ccc; font-size: 1.1rem; flex-shrink: 0; }
-  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; display: inline-block; margin-right: 5px; }
-  .footer { text-align: center; margin-top: 2rem; font-size: 0.78rem; color: #ccc; }
   .new-badge { background: #dcfce7; color: #166534; font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 20px; margin-left: 6px; vertical-align: middle; }
   .copy-btn { display: none; width: 100%; margin-top: 1.2rem; padding: 0.7rem; background: #f0f0f0; color: #333; border: none; border-radius: 12px; font-size: 0.92rem; font-weight: 600; cursor: pointer; transition: background 0.15s; }
   .copy-btn:active { background: #e0e0e0; }
   .copy-btn.copied { background: #dcfce7; color: #166534; }
+  .notice { text-align: center; margin-top: 1rem; font-size: 0.76rem; color: #ccc; }
+  .footer { text-align: center; margin-top: 0.5rem; font-size: 0.76rem; color: #ddd; }
 </style>
 </head>
 <body>
 
 <div class="header">
   <h1>📚 课程资源</h1>
-  <p><span class="status-dot" id="conn-dot" style="background:#ccc"></span><span id="conn-text">正在连接...</span></p>
+  <p class="viewer-count" id="viewer-count"></p>
 </div>
 
 <div id="waiting" class="waiting">
@@ -62,6 +62,7 @@
 
 <button class="copy-btn" id="copy-btn" onclick="copyLinks()">📋 复制全部链接</button>
 
+<p class="notice">结束后 24 小时链接将自动清除</p>
 <div class="footer">页面自动更新 · 无需刷新</div>
 
 <script>
@@ -89,10 +90,19 @@ let seen = {};
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+// Presence tracking for viewer count
+const presenceId = sessionStorage.getItem('wk_pid') || Math.random().toString(36).slice(2, 9);
+sessionStorage.setItem('wk_pid', presenceId);
+const presenceRef = db.ref('workshop/presence/' + presenceId);
 db.ref('.info/connected').on('value', snap => {
-  const ok = snap.val();
-  document.getElementById('conn-dot').style.background = ok ? '#22c55e' : '#ef4444';
-  document.getElementById('conn-text').textContent = ok ? '已连接，实时同步' : '连接中断';
+  if (snap.val()) {
+    presenceRef.set(true);
+    presenceRef.onDisconnect().remove();
+  }
+});
+db.ref('workshop/presence').on('value', snap => {
+  const count = snap.numChildren();
+  document.getElementById('viewer-count').textContent = count > 0 ? `👥 ${count} 人正在浏览` : '';
 });
 
 db.ref('workshop/links').on('value', snap => {
@@ -102,7 +112,8 @@ db.ref('workshop/links').on('value', snap => {
   list.innerHTML = '';
   let anyVisible = false;
 
-  const maxIndex = Math.max(...Object.keys(data).map(Number), 11);
+  const keys = Object.keys(data).map(Number);
+  const maxIndex = keys.length ? Math.max(...keys) : -1;
   for (let i = 0; i <= maxIndex; i++) {
     const item = data[i];
     if (item && item.visible) {
@@ -153,7 +164,6 @@ function copyLinks() {
     setTimeout(() => { btn.textContent = '📋 复制全部链接'; btn.classList.remove('copied'); }, 2500);
   });
 }
-
 </script>
 </body>
 </html>
