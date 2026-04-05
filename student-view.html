@@ -6,7 +6,6 @@
 <title>NotebookLM 工作坊 · 课程资源</title>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/docx@8.2.4/build/index.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: system-ui, sans-serif; background: #f7f7f3; min-height: 100vh; padding: 2rem 1.2rem; }
@@ -61,7 +60,7 @@
 
 <div id="links-list" class="links-list" style="display:none"></div>
 
-<button class="dl-btn" id="dl-btn" onclick="downloadDocx()">⬇ 下载 Word 存档</button>
+<button class="dl-btn" id="dl-btn" onclick="downloadMd()">⬇ 下载 Markdown 存档</button>
 
 <div class="footer">页面自动更新 · 无需刷新</div>
 
@@ -139,68 +138,25 @@ db.ref('workshop/links').on('value', snap => {
   }
 });
 
-async function downloadDocx() {
-  const btn = document.getElementById('dl-btn');
-  btn.textContent = '生成中...';
-  btn.disabled = true;
+function downloadMd() {
+  const today = new Date().toLocaleDateString('zh-CN');
+  let md = `# 课程资源\n\nNotebookLM 工作坊 · ${today}\n\n---\n\n`;
 
-  try {
-    const { Document, Packer, Paragraph, TextRun, AlignmentType } = docx;
-    const today = new Date().toLocaleDateString('zh-CN');
+  document.querySelectorAll('.link-card').forEach((card) => {
+    const title = card.querySelector('.link-title').childNodes[0].textContent.trim();
+    const url = card.href;
+    const num = card.querySelector('.link-num').textContent;
+    md += `### ${num} ${title}\n\n[${url}](${url})\n\n---\n\n`;
+  });
 
-    const children = [
-      new Paragraph({
-        children: [new TextRun({ text: '课程资源', bold: true, size: 40 })],
-        spacing: { after: 120 }
-      }),
-      new Paragraph({
-        children: [new TextRun({ text: 'NotebookLM 工作坊 · ' + today, color: '888888', size: 20 })],
-        spacing: { after: 480 }
-      })
-    ];
+  md += `> 导出时间：${new Date().toLocaleString('zh-CN')}`;
 
-    document.querySelectorAll('.link-card').forEach((card) => {
-      const title = card.querySelector('.link-title').childNodes[0].textContent.trim();
-      const url = card.href;
-      const num = card.querySelector('.link-num').textContent;
-
-      children.push(
-        new Paragraph({
-          children: [new TextRun({ text: num, color: 'AAAAAA', size: 16 })],
-          spacing: { before: 280, after: 60 }
-        }),
-        new Paragraph({
-          children: [new TextRun({ text: title, bold: true, size: 24 })],
-          spacing: { after: 80 }
-        }),
-        new Paragraph({
-          children: [new TextRun({ text: url, color: '2563EB', size: 18 })],
-          spacing: { after: 280 }
-        })
-      );
-    });
-
-    children.push(
-      new Paragraph({
-        children: [new TextRun({ text: '导出时间：' + new Date().toLocaleString('zh-CN'), color: 'CCCCCC', size: 16 })],
-        alignment: AlignmentType.CENTER,
-        spacing: { before: 480 }
-      })
-    );
-
-    const doc = new Document({ sections: [{ properties: {}, children }] });
-    const blob = await Packer.toBlob(doc);
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = '工作坊课程资源_' + today.replace(/\//g, '-') + '.docx';
-    a.click();
-    URL.revokeObjectURL(a.href);
-  } catch (e) {
-    alert('下载失败：' + e.message);
-  }
-
-  btn.textContent = '⬇ 下载 Word 存档';
-  btn.disabled = false;
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '工作坊课程资源_' + today.replace(/\//g, '-') + '.md';
+  a.click();
+  URL.revokeObjectURL(a.href);
 }
 </script>
 </body>
