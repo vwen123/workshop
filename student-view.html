@@ -114,10 +114,12 @@ db.ref('workshop/links').on('value', snap => {
 
   const keys = Object.keys(data).map(Number);
   const maxIndex = keys.length ? Math.max(...keys) : -1;
+  let displayNum = 0;
   for (let i = 0; i <= maxIndex; i++) {
     const item = data[i];
     if (item && item.visible) {
       anyVisible = true;
+      displayNum++;
       const isNew = !seen[i];
       seen[i] = true;
       const a = document.createElement('a');
@@ -127,7 +129,7 @@ db.ref('workshop/links').on('value', snap => {
       a.innerHTML = `
         <div class="link-icon ${getIconClass(i)}">${getIcon(i)}</div>
         <div class="link-info">
-          <div class="link-num">资源 ${i+1}</div>
+          <div class="link-num">资源 ${displayNum}</div>
           <div class="link-title">${item.title}${isNew ? '<span class="new-badge">NEW</span>' : ''}</div>
           <div class="link-url">${shortUrl(item.url)}</div>
         </div>
