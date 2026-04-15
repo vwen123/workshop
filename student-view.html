@@ -112,33 +112,36 @@ db.ref('workshop/links').on('value', snap => {
   list.innerHTML = '';
   let anyVisible = false;
 
-  const keys = Object.keys(data).map(Number);
-  const maxIndex = keys.length ? Math.max(...keys) : -1;
-  let displayNum = 0;
-  for (let i = 0; i <= maxIndex; i++) {
-    const item = data[i];
-    if (item && item.visible) {
-      anyVisible = true;
-      displayNum++;
-      const isNew = !seen[i];
-      seen[i] = true;
-      const a = document.createElement('a');
-      a.className = 'link-card';
-      a.href = item.url;
-      a.target = '_blank';
-      a.innerHTML = `
-        <div class="link-icon ${getIconClass(i)}">${getIcon(i)}</div>
-        <div class="link-info">
-          <div class="link-num">资源 ${displayNum}</div>
-          <div class="link-title">${item.title}${isNew ? '<span class="new-badge">NEW</span>' : ''}</div>
-          <div class="link-url">${shortUrl(item.url)}</div>
-        </div>
-        <div class="arrow">›</div>`;
-      list.appendChild(a);
-    } else {
-      seen[i] = false;
-    }
-  }
+  // Sort visible links by pushedAt timestamp (push order)
+  const visibleItems = Object.entries(data)
+    .filter(([k, v]) => v && v.visible)
+    .sort((a, b) => (a[1].pushedAt || 0) - (b[1].pushedAt || 0));
+
+  // Mark hidden items as unseen
+  Object.entries(data).forEach(([k, v]) => {
+    if (!v || !v.visible) seen[parseInt(k)] = false;
+  });
+
+  visibleItems.forEach(([k, item], idx) => {
+    anyVisible = true;
+    const i = parseInt(k);
+    const isNew = !seen[i];
+    seen[i] = true;
+    const displayNum = idx + 1;
+    const a = document.createElement('a');
+    a.className = 'link-card';
+    a.href = item.url;
+    a.target = '_blank';
+    a.innerHTML = `
+      <div class="link-icon ${getIconClass(i)}">${getIcon(i)}</div>
+      <div class="link-info">
+        <div class="link-num">资源 ${displayNum}</div>
+        <div class="link-title">${item.title}${isNew ? '<span class="new-badge">NEW</span>' : ''}</div>
+        <div class="link-url">${shortUrl(item.url)}</div>
+      </div>
+      <div class="arrow">›</div>`;
+    list.appendChild(a);
+  });
 
   if (anyVisible) {
     waiting.style.display = 'none';

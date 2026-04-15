@@ -305,7 +305,11 @@ function pushLink(i) {
   db.ref('workshop/sessionStart').once('value', snap => {
     if (!snap.val()) db.ref('workshop/sessionStart').set(firebase.database.ServerValue.TIMESTAMP);
   });
-  db.ref('workshop/links/' + i).set({ visible: true, title: cards[i].title, url: cards[i].url });
+  // Read existing pushedAt to preserve original push order on re-push
+  db.ref('workshop/links/' + i + '/pushedAt').once('value', snap => {
+    const pushedAt = snap.val() || firebase.database.ServerValue.TIMESTAMP;
+    db.ref('workshop/links/' + i).set({ visible: true, title: cards[i].title, url: cards[i].url, pushedAt });
+  });
 }
 function hideLink(i) {
   if (!db) return alert('Firebase 未连接');
