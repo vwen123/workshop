@@ -1071,6 +1071,14 @@ function goTo(n) {
   document.getElementById('pg').textContent = cur + ' / ' + TOTAL;
   document.getElementById('progress').style.width = (cur / TOTAL * 100) + '%';
   document.getElementById('sec').textContent = '— ' + (el.dataset.sec || '') + ' —';
+
+  // 自动通知小智朗读
+  const text = el.innerText.replace(/\s+/g, ' ').trim().slice(0, 400);
+  fetch('http://localhost:3000/api/speak-slide', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({text, slide: n})
+  }).catch(() => {});
 }
 
 document.addEventListener('keydown', e => {
@@ -1086,6 +1094,19 @@ document.getElementById('deck').addEventListener('click', e => {
 });
 
 window.goTo = goTo;
+
+// 手机遥控：轮询 /api/remote-slide，有变化则跳页
+let _remoteTs = 0;
+setInterval(() => {
+  fetch('http://localhost:3000/api/remote-slide')
+    .then(r => r.json())
+    .then(d => {
+      if (d.ts && d.ts !== _remoteTs && d.target > 0 && d.target !== cur) {
+        _remoteTs = d.ts;
+        goTo(d.target);
+      }
+    }).catch(() => {});
+}, 1000);
 
 // Sort cards
 function sortSel(c) {
@@ -1118,6 +1139,134 @@ const saved = localStorage.getItem('prostart-commit-260523');
 if (saved) document.getElementById('commit-text').value = saved;
 
 goTo(1);
+
+// ── 大屏幕显示轮询（投票/计时器等直接叠在简报上）──
+let _displayTs = 0;
+setInterval(() => {
+  fetch('http://localhost:3000/api/display')
+    .then(r => r.json())
+    .then(d => {
+      if (!d.ts || d.ts <= _displayTs) return;
+      _displayTs = d.ts;
+      if (d.type === 'poll') showPollOverlay(d);
+      else if (d.type === 'poll_end') { renderPollBars(d.poll || {}); setTimeout(closePollOverlay, 4000); }
+      else if (d.type === 'timer') startCountdown(d.minutes || 1, d.label || '');
+      else if (d.type === 'timer_pause') pauseCountdown();
+      else if (d.type === 'timer_stop') closeCountdown();
+      else if (d.type === 'clear') { closePollOverlay(); closeCountdown(); }
+    }).catch(() => {});
+}, 1200);
+
+function showPollOverlay(d) {
+  const poll = d.poll || {};
+  document.getElementById('xp-question').textContent = poll.question || '';
+  document.getElementById('xp-qr').src = d.qr_url || '';
+  document.getElementById('xp-url').textContent = d.vote_url || '';
+  renderPollBars(poll);
+  document.getElementById('xp-overlay').style.display = 'flex';
+}
+function renderPollBars(poll) {
+  const votes = poll.votes || {}, opts = poll.options || [];
+  const total = Object.values(votes).reduce((a, b) => a + b, 0);
+  document.getElementById('xp-total').textContent = '共 ' + total + ' 票';
+  document.getElementById('xp-bars').innerHTML = opts.map((opt, i) => {
+    const count = votes[String(i)] || 0;
+    const pct = total > 0 ? Math.round(count / total * 100) : 0;
+    return '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">' +
+      '<div style="min-width:110px;font-size:clamp(13px,1.5vw,20px);color:#eef7ff">' + opt + '</div>' +
+      '<div style="flex:1;background:rgba(255,255,255,.08);border-radius:999px;height:28px;overflow:hidden">' +
+      '<div style="height:100%;background:linear-gradient(90deg,#63f5ff,#9f7cff);border-radius:999px;width:' + pct + '%;min-width:4px;transition:width .5s"></div></div>' +
+      '<div style="min-width:32px;color:#63f5ff;font-weight:700;font-size:clamp(13px,1.4vw,18px)">' + count + '</div></div>';
+  }).join('');
+}
+function closePollOverlay() { document.getElementById('xp-overlay').style.display = 'none'; }
+
+// ── 计时器 ──
+const XC = 2 * Math.PI * 82;
+let _xTimerTotal = 0, _xTimerLeft = 0, _xTimerRunning = false, _xTimerTick = null;
+
+function startCountdown(minutes, label) {
+  _xTimerTotal = minutes * 60;
+  _xTimerLeft  = _xTimerTotal;
+  _xTimerRunning = true;
+  document.getElementById('xt-label').textContent = label || minutes + ' 分钟';
+  document.getElementById('xt-overlay').style.display = 'flex';
+  _updateTimerUI();
+  clearInterval(_xTimerTick);
+  _xTimerTick = setInterval(() => {
+    if (!_xTimerRunning) return;
+    _xTimerLeft--;
+    _updateTimerUI();
+    if (_xTimerLeft <= 0) {
+      clearInterval(_xTimerTick);
+      document.getElementById('xt-arc').style.stroke = '#ef4444';
+    }
+  }, 1000);
+}
+
+function _updateTimerUI() {
+  const m = Math.floor(_xTimerLeft / 60).toString().padStart(2,'0');
+  const s = (_xTimerLeft % 60).toString().padStart(2,'0');
+  document.getElementById('xt-digits').textContent = m + ':' + s;
+  const pct = _xTimerTotal > 0 ? _xTimerLeft / _xTimerTotal : 0;
+  document.getElementById('xt-arc').style.strokeDashoffset = XC * (1 - pct);
+  const arc = document.getElementById('xt-arc');
+  if      (_xTimerLeft <= 30)               arc.style.stroke = '#ef4444';
+  else if (_xTimerLeft <= _xTimerTotal*.3)  arc.style.stroke = '#fbbf24';
+  else                                       arc.style.stroke = '#34d399';
+}
+
+function pauseCountdown() {
+  _xTimerRunning = !_xTimerRunning;
+  document.getElementById('xt-pause').textContent = _xTimerRunning ? '⏸ 暂停' : '▶ 继续';
+}
+
+function closeCountdown() {
+  clearInterval(_xTimerTick);
+  document.getElementById('xt-overlay').style.display = 'none';
+}
 </script>
+
+<!-- 计时器角标（右上角，不遮简报）-->
+<div id="xt-overlay" style="display:none;position:fixed;top:18px;right:18px;z-index:998;
+  background:rgba(10,10,22,0.88);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.1);border-radius:20px;
+  padding:14px 16px;width:148px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,.6)">
+  <div style="position:relative;width:100px;height:100px;margin:0 auto">
+    <svg viewBox="0 0 200 200" style="width:100%;height:100%;transform:rotate(-90deg)">
+      <circle cx="100" cy="100" r="82" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="14"/>
+      <circle id="xt-arc" cx="100" cy="100" r="82" fill="none" stroke="#34d399" stroke-width="14"
+              stroke-linecap="round" stroke-dasharray="515" stroke-dashoffset="0"
+              style="transition:stroke-dashoffset .9s linear,stroke .5s"/>
+    </svg>
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;
+                align-items:center;justify-content:center;gap:2px">
+      <span id="xt-digits" style="font-size:1.55rem;font-weight:700;color:#fff;
+            font-variant-numeric:tabular-nums;letter-spacing:1px">00:00</span>
+      <span id="xt-label" style="font-size:.6rem;color:rgba(255,255,255,.35);letter-spacing:1px"></span>
+    </div>
+  </div>
+</div>
+
+<!-- 投票 overlay（直接叠在简报上）-->
+<div id="xp-overlay" style="display:none;position:fixed;inset:0;z-index:999;
+  background:linear-gradient(135deg,#07090d,#0c111a);
+  flex-direction:row;align-items:center;justify-content:center;gap:48px;padding:5%">
+  <button onclick="closePollOverlay()" style="position:absolute;top:16px;right:20px;
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+    color:rgba(255,255,255,.5);padding:6px 16px;border-radius:8px;cursor:pointer;font-size:13px">
+    ✕ 关闭
+  </button>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:14px">
+    <img id="xp-qr" src="" width="200" height="200" style="border-radius:14px;border:2px solid rgba(99,245,255,.4)">
+    <div id="xp-url" style="font-size:12px;color:rgba(99,245,255,.6);letter-spacing:1px"></div>
+    <div style="font-size:11px;color:rgba(255,255,255,.3)">扫码投票</div>
+  </div>
+  <div style="flex:1;max-width:60%">
+    <div id="xp-question" style="font-size:clamp(20px,2.5vw,34px);font-weight:700;color:#fff;margin-bottom:28px;line-height:1.4"></div>
+    <div id="xp-bars"></div>
+    <div id="xp-total" style="margin-top:18px;font-size:13px;color:rgba(255,255,255,.35);letter-spacing:1px"></div>
+  </div>
+</div>
 </body>
 </html>
