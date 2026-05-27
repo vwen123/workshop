@@ -20,15 +20,16 @@ html,body{height:100%;overflow:hidden;overscroll-behavior:none}body{touch-action
 #hint{position:fixed;bottom:18px;left:28px;font-size:11px;color:var(--w4);z-index:100}
 .slide{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;padding:72px 100px;opacity:0;pointer-events:none;transition:opacity .5s ease,transform .5s ease;transform:translateY(12px);overflow-y:auto;overflow-x:hidden}
 .slide.active{opacity:1;pointer-events:auto;transform:translateY(0)}
-/* compact slides — dense content, reduced padding */
-.slide.compact{padding:48px 80px 40px}
+/* compact slides — dense content, reduced font + padding */
+.slide.compact{padding:40px 80px 32px;--h1:clamp(28px,3.6vw,50px);--h2:clamp(22px,2.9vw,40px);--h3:clamp(17px,2.2vw,30px);--body:clamp(14px,1.5vw,22px);--sm:clamp(12px,1.2vw,18px)}
 .slide.compact .si>.h1{margin-top:4px}
-.slide.compact .g2{gap:14px!important}
-.slide.compact .mt32{margin-top:16px!important}
-.slide.compact .mt28{margin-top:14px!important}
-.slide.compact .step-item,.slide.compact [class*="step"]{padding:10px 14px}
+.slide.compact .g2{gap:12px!important}
+.slide.compact .mt32{margin-top:12px!important}
+.slide.compact .mt28{margin-top:10px!important}
+.slide.compact .mt16{margin-top:8px!important}
+.slide.compact .ci-box,.slide.compact [class*="step"]{padding:8px 14px}
 
-.slide:not(.fb)::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(26,115,232,0.15) 1.2px,transparent 1.2px);background-size:28px 28px;background-position:0 0;opacity:1;pointer-events:none;z-index:0}
+.slide:not(.fb)::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(26,115,232,0.07) 1px,transparent 1px),linear-gradient(90deg,rgba(26,115,232,0.07) 1px,transparent 1px);background-size:36px 36px;background-position:0 0;opacity:1;pointer-events:none;z-index:0}
 .si{position:relative;z-index:1;width:100%;max-width:1280px;margin:auto;padding:24px 0}
 
 /* Full-bleed */
