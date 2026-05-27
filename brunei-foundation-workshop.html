@@ -113,6 +113,10 @@ html,body{height:100%;overflow:hidden;overscroll-behavior:none}body{touch-action
 .t-btn.red-btn:hover{background:var(--gred);color:#fff}
 .prompt-box{background:#fff;border:1px solid rgba(26,115,232,.25);border-radius:12px;padding:18px 22px;margin-bottom:16px}
 .prompt-box .sm{color:var(--w2);line-height:1.6}
+
+.copy-btn{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:transparent;border:1px solid rgba(26,115,232,.35);border-radius:20px;font-size:var(--xs);font-weight:600;color:var(--blue);cursor:pointer;transition:all .2s;margin-top:10px}
+.copy-btn:hover{background:rgba(26,115,232,.08)}
+.copy-btn.copied{color:#34A853;border-color:#34A853}
 .padlet-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:var(--amber);color:#202124;border:none;border-radius:30px;font-size:var(--sm);font-weight:700;cursor:pointer}
 
 /* Roadmap */
@@ -366,6 +370,7 @@ html,body{height:100%;overflow:hidden;overscroll-behavior:none}body{touch-action
   <div class="prompt-box">
     <div class="xs" style="margin-bottom:6px;font-weight:700;color:var(--cyan)">📝 PROMPT TEMPLATE</div>
     <div class="sm">Topic: ___, Grade: ___, Goal: Students will be able to ___, Style: Clean / Playful / Professional</div>
+    <div style="text-align:right;margin-top:8px"><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy Prompt</button></div>
   </div>
 
 </div></div>
@@ -573,9 +578,10 @@ html,body{height:100%;overflow:hidden;overscroll-behavior:none}body{touch-action
   <div class="prompt-box">
     <div class="xs" style="margin-bottom:6px;font-weight:700;color:var(--cyan)">📝 PROMPT TEMPLATE</div>
     <div class="sm">Create a [vocab matching / fill-in-the-blank / quiz] for [subject] topic "[topic]", [N] questions, suitable for [grade]</div>
+    <div style="text-align:right;margin-top:8px"><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy Prompt</button></div>
   </div>
   <div style="text-align:center;margin-top:16px">
-    <button class="padlet-btn" onclick="window.open('https://padlet.com','_blank')">📌 Upload to Padlet #3</button>
+    <button class="padlet-btn" onclick="window.open('https://padlet.com','_blank')">📌 Upload to Padlet</button>
   </div>
 </div></div>
 </section><section class="slide fb" data-slide="15" data-section="Gemini">
@@ -666,9 +672,10 @@ html,body{height:100%;overflow:hidden;overscroll-behavior:none}body{touch-action
   <div class="prompt-box">
     <div class="xs" style="margin-bottom:6px;font-weight:700;color:var(--cyan)">📝 PROMPT TEMPLATE</div>
     <div class="sm">Write a storybook for Primary [grade] students about "[ ]". For each page, add an image description in 【 】 for illustration.</div>
+    <div style="text-align:right;margin-top:8px"><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy Prompt</button></div>
   </div>
   <div style="text-align:center;margin-top:16px">
-    <button class="padlet-btn" onclick="window.open('https://padlet.com','_blank')">📌 Upload to Padlet #4</button>
+    <button class="padlet-btn" onclick="window.open('https://padlet.com','_blank')">📌 Upload to Padlet</button>
   </div>
 </div></div>
 </section><section class="slide fb" data-slide="20" data-section="NotebookLM">
@@ -770,9 +777,10 @@ html,body{height:100%;overflow:hidden;overscroll-behavior:none}body{touch-action
   <div class="prompt-box">
     <div class="xs" style="margin-bottom:6px;font-weight:700;color:var(--cyan)">📝 PROMPT TEMPLATE</div>
     <div class="sm">Based on the materials above, generate an infographic with: 3–5 key concepts, key vocabulary, and key sentences. Suitable for primary school students.</div>
+    <div style="text-align:right;margin-top:8px"><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy Prompt</button></div>
   </div>
   <div style="text-align:center;margin-top:16px">
-    <button class="padlet-btn" onclick="window.open('https://padlet.com','_blank')">📌 Upload to Padlet #5</button>
+    <button class="padlet-btn" onclick="window.open('https://padlet.com','_blank')">📌 Upload to Padlet</button>
   </div>
 </div></div>
 </section><section class="slide compact" data-slide="25" data-section="NotebookLM">
@@ -824,9 +832,10 @@ html,body{height:100%;overflow:hidden;overscroll-behavior:none}body{touch-action
   <div class="prompt-box">
     <div class="xs" style="margin-bottom:6px;font-weight:700;color:var(--cyan)">📝 PROMPT TEMPLATE</div>
     <div class="sm">In your NotebookLM notebook → Click Generate → Slide Deck → Open in Google Slides → Take a screenshot</div>
+    <div style="text-align:right;margin-top:8px"><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy Prompt</button></div>
   </div>
   <div style="text-align:center;margin-top:16px">
-    <button class="padlet-btn" onclick="window.open('https://padlet.com','_blank')">📌 Upload to Padlet #5</button>
+    <button class="padlet-btn" onclick="window.open('https://padlet.com','_blank')">📌 Upload to Padlet</button>
   </div>
 </div></div>
 </section><section class="slide" data-slide="27" data-section="NotebookLM">
@@ -962,6 +971,16 @@ html,body{height:100%;overflow:hidden;overscroll-behavior:none}body{touch-action
 </div>
 </section>
 <script>
+function copyPrompt(btn){
+  const box = btn.closest('.prompt-box');
+  const txt = box.querySelector('.sm').innerText;
+  navigator.clipboard.writeText(txt).then(()=>{
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent = '📋 Copy Prompt';btn.classList.remove('copied')},2000);
+  });
+}
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyDclqzD6hl280LpJNVNHZ9zrwl2hgjfIIc",
