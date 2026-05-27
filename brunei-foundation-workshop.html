@@ -580,6 +580,7 @@ html,body{height:100%;overflow:hidden;overscroll-behavior:none}body{touch-action
     <div class="sm">Create a [vocab matching / fill-in-the-blank / quiz] for [subject] topic "[topic]", [N] questions, suitable for [grade]</div>
     <div style="text-align:right;margin-top:8px"><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy Prompt</button></div>
   </div>
+  <div class="sm mt12">🔗 <a href="https://gemini.google.com/app" target="_blank" style="color:var(--blue);font-weight:600">AI Style Prompt Generator ↗</a></div>
   <div style="text-align:center;margin-top:16px">
     <button class="padlet-btn" onclick="window.open('https://padlet.com','_blank')">📌 Upload to Padlet</button>
   </div>
@@ -674,6 +675,7 @@ html,body{height:100%;overflow:hidden;overscroll-behavior:none}body{touch-action
     <div class="sm">Write a storybook for Primary [grade] students about "[ ]". For each page, add an image description in 【 】 for illustration.</div>
     <div style="text-align:right;margin-top:8px"><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy Prompt</button></div>
   </div>
+  <div class="sm mt12">🔗 <a href="https://gemini.google.com/app" target="_blank" style="color:var(--blue);font-weight:600">AI Style Prompt Generator ↗</a></div>
   <div style="text-align:center;margin-top:16px">
     <button class="padlet-btn" onclick="window.open('https://padlet.com','_blank')">📌 Upload to Padlet</button>
   </div>
@@ -767,35 +769,25 @@ html,body{height:100%;overflow:hidden;overscroll-behavior:none}body{touch-action
 </section>
 <section class="slide compact" data-slide="24" data-section="NotebookLM">
   <div class="si">
-  <span class="kicker grn">Demo + Try It · 10 min</span>
+  <span class="kicker grn">Demo</span>
   <div class="h1 mt8">Generate an Infographic / Slide Deck</div>
-  <div class="g2 ga mt28">
-    <div class="steps" id="steps-extract">
+  <div class="steps mt32" id="steps-extract" style="max-width:680px;margin:32px auto 0">
       <div class="step" onclick="advStep(&quot;steps-extract&quot;,0)">
   <div class="sn">1</div>
-  <div class="step-txt"><div class="h3">Upload your material</div><div class="sm mt8">PDF, Google Doc, or web link → NotebookLM processes instantly</div></div>
+  <div class="step-txt"><div class="h3">Upload your material</div><div class="sm mt8">PDF, Google Doc, or web link — NotebookLM reads and indexes it automatically</div></div>
 </div>
       <div class="step" onclick="advStep(&quot;steps-extract&quot;,1)">
   <div class="sn">2</div>
-  <div class="step-txt"><div class="h3">Type your prompt in the chat</div><div class="sm mt8">Use the template on the right — paste and send</div></div>
+  <div class="step-txt"><div class="h3">Extract data</div><div class="sm mt8">Ask a question or paste your prompt in the chat — NLM answers only from your file</div></div>
 </div>
       <div class="step" onclick="advStep(&quot;steps-extract&quot;,2)">
   <div class="sn">3</div>
-  <div class="step-txt"><div class="h3">Infographic icon → Download · or Generate Slide Deck</div><div class="sm mt8">PNG ready for worksheets · Slide Deck opens in Google Slides</div></div>
+  <div class="step-txt"><div class="h3">Generate Infographic or Slide Deck</div><div class="sm mt8">Click the Infographic icon to download a PNG, or choose Slide Deck to open in Google Slides</div></div>
 </div>
-    </div>
-    <div class="card card-grn">
-      <div class="h3 grn" style="margin-bottom:16px">📝 Prompt Template</div>
-      <div class="prompt-box">
-        <div class="xs" style="margin-bottom:6px;font-weight:700;color:var(--cyan)">📝 PROMPT TEMPLATE</div>
-        <div class="sm">Based on the materials above, generate an infographic with【   】style. Suitable for primary school students.</div>
-        <div style="text-align:right;margin-top:8px"><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy Prompt</button></div>
-      </div>
-      <div class="sm mt12">🔗 <a href="https://gemini.google.com/app" target="_blank" style="color:var(--blue);font-weight:600">AI Style Prompt Generator ↗</a></div>
-      <div style="text-align:center;margin-top:16px">
-        <button class="padlet-btn" onclick="window.open('https://padlet.com','_blank')">📌 Upload to Padlet</button>
-      </div>
-    </div>
+  </div>
+  <div class="prompt-box mt28" style="max-width:680px;margin:28px auto 0">
+    <div class="xs" style="margin-bottom:6px;font-weight:700;color:var(--cyan)">📝 PROMPT TEMPLATE</div>
+    <div class="sm">Based on the materials above, generate an infographic with【   】style. Suitable for primary school students.</div>
   </div>
 </section>
 <section class="slide" data-slide="25" data-section="NotebookLM">
@@ -808,6 +800,7 @@ html,body{height:100%;overflow:hidden;overscroll-behavior:none}body{touch-action
     <div class="sm">Based on the materials above, generate an infographic with【   】style. Suitable for primary school students.</div>
     <div style="text-align:right;margin-top:8px"><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy Prompt</button></div>
   </div>
+  <div class="sm mt12">🔗 <a href="https://gemini.google.com/app" target="_blank" style="color:var(--blue);font-weight:600">AI Style Prompt Generator ↗</a></div>
   <div style="text-align:center;margin-top:16px">
     <button class="padlet-btn" onclick="window.open('https://padlet.com','_blank')">📌 Upload to Padlet</button>
   </div>
