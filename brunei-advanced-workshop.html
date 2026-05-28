@@ -1169,6 +1169,72 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
   </div>
 </section>
 
+<!-- CR-6: 6 Teaching Skills – Click to Copy -->
+<section class="slide" data-slide="CR-6" data-section="Chrome Built-in AI">
+  <div class="si" style="--h1:clamp(26px,3vw,38px);--h2:clamp(22px,2.4vw,30px);--h3:clamp(18px,1.9vw,24px);--body:clamp(16px,1.7vw,22px);--sm:clamp(14px,1.3vw,18px)">
+    <div class="kicker">Chrome Built-in AI · Your Skill Toolkit</div>
+    <div class="h1 mt8">6 <span class="cyan">Teaching Skills</span> — Click to Copy</div>
+    <div class="body mt8" style="color:var(--w3)">Copy any prompt → Paste into Chrome AI sidebar → Click ⚡ to save as your Skill</div>
+    <div class="mt20" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+
+      <div class="card" style="padding:18px 20px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:26px">📋</span>
+          <div class="h3" style="font-size:18px">001 · Key Summary</div>
+        </div>
+        <div class="sm" style="color:var(--w3);flex:1">Condense any content into clear, structured key points</div>
+        <button class="cr6-btn" id="copy-001" onclick="copySkill('001')">Copy</button>
+      </div>
+
+      <div class="card" style="padding:18px 20px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:26px">📝</span>
+          <div class="h3" style="font-size:18px">002 · Quiz Generator</div>
+        </div>
+        <div class="sm" style="color:var(--w3);flex:1">Generate 5 MCQs with answers and explanations</div>
+        <button class="cr6-btn" id="copy-002" onclick="copySkill('002')">Copy</button>
+      </div>
+
+      <div class="card" style="padding:18px 20px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:26px">📄</span>
+          <div class="h3" style="font-size:18px">003 · Worksheet Design</div>
+        </div>
+        <div class="sm" style="color:var(--w3);flex:1">Design a ready-to-use student worksheet</div>
+        <button class="cr6-btn" id="copy-003" onclick="copySkill('003')">Copy</button>
+      </div>
+
+      <div class="card" style="padding:18px 20px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:26px">🎨</span>
+          <div class="h3" style="font-size:18px">004 · AI Image Prompt</div>
+        </div>
+        <div class="sm" style="color:var(--w3);flex:1">Write a detailed prompt for AI image generation</div>
+        <button class="cr6-btn" id="copy-004" onclick="copySkill('004')">Copy</button>
+      </div>
+
+      <div class="card" style="padding:18px 20px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:26px">📅</span>
+          <div class="h3" style="font-size:18px">005 · Meeting Minutes</div>
+        </div>
+        <div class="sm" style="color:var(--w3);flex:1">Turn transcripts into formal, actionable minutes</div>
+        <button class="cr6-btn" id="copy-005" onclick="copySkill('005')">Copy</button>
+      </div>
+
+      <div class="card" style="padding:18px 20px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:26px">✏️</span>
+          <div class="h3" style="font-size:18px">006 · Transcript Edit</div>
+        </div>
+        <div class="sm" style="color:var(--w3);flex:1">Polish transcripts — fix errors, smooth sentences</div>
+        <button class="cr6-btn" id="copy-006" onclick="copySkill('006')">Copy</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- ============ MODULE 2 COVER ============ -->
 <section class="slide fb" data-slide="MOD2" data-section="Module 2 · Animation">
   <div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center">
@@ -1760,6 +1826,59 @@ function openPadlet() {
   if (url) window.open(url, '_blank');
 }
 function closePadlet() {}
+</script>
+<style>
+.cr6-btn {
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  align-self: flex-start;
+}
+.cr6-btn:hover { background: #1a73e8; transform: scale(1.03); }
+.cr6-btn.copied { background: #34a853 !important; }
+</style>
+<script>
+const SKILL_PROMPTS = {
+  "001": "You are a content analysis expert specialising in information organisation. Please organise the following content into a clear, bulleted summary with well-defined key points. Prioritise extracting core concepts, important perspectives, key practices and conclusions. Avoid lengthy descriptions. If the content is long, organise it into themed sections; if it follows a process, organise it in sequence. The output should be suitable for meeting minutes, presentation highlights, classroom handouts or quick review.",
+  "002": "You are a professional assessment design teacher. Based on the following content, design a set of quiz questions that can assess learners\u2019 understanding of core concepts. Generate 5 multiple-choice questions, each including: the question, 4 options, the correct answer, and an answer explanation. Keep the difficulty moderate \u2014 avoid trivial or purely memory-based questions. Explanations should clearly state why the correct answer is right and briefly address why incorrect options are wrong where necessary. The overall set should be suitable for classroom practice, formative assessment or review activities.",
+  "003": "You are a worksheet design expert familiar with primary and secondary school teaching. Based on the following content, design a student worksheet that can be used directly. Include: learning topic, learning objectives, guiding instructions, core tasks, thinking questions, response areas or extension activities. Where appropriate, also include group discussion, observation records, chart organisation or reflective prompts. The overall design should balance students\u2019 comprehension level, practicality and classroom feasibility.",
+  "004": "You are a visual design prompt expert familiar with AI image generation. Based on the following topic, write a high-quality, specific, ready-to-use AI image generation prompt. The prompt should include descriptions of: subject, scene, composition, style, lighting, colour, texture, atmosphere and aspect ratio. If needed, also include elements you do not want to appear, to improve generation quality. Keep descriptions specific rather than vague, so that the generated results are more stable and closely match the requirements.",
+  "005": "You are a professional meeting minutes organiser. Please organise the following transcript or meeting content into formal, clear and well-structured meeting minutes. Include: meeting topic, key discussion points, decisions made, action items, persons responsible and follow-up tracking. If the original content is scattered, organise it by topic and retain important details. The output style should be formal and easy to follow up on.",
+  "006": "You are a professional transcript editing assistant. Please refine the following transcript by smoothing sentences, correcting typos, completing punctuation and standardising terminology, while preserving the speaker\u2019s original tone and content flow. Colloquial filler words may be moderately removed where appropriate, but the original meaning must not be changed. Where suitable, divide into paragraphs to improve readability. The output should be clean and natural, suitable for conversion into articles or handouts."
+};
+
+function copySkill(id) {
+  const text = SKILL_PROMPTS[id];
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById("copy-" + id);
+    const orig = btn.textContent;
+    btn.textContent = "Copied ✓";
+    btn.classList.add("copied");
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.classList.remove("copied");
+    }, 2200);
+  }).catch(() => {
+    // fallback
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    const btn = document.getElementById("copy-" + id);
+    btn.textContent = "Copied ✓";
+    btn.classList.add("copied");
+    setTimeout(() => { btn.textContent = "Copy"; btn.classList.remove("copied"); }, 2200);
+  });
+}
 </script>
 </body>
 </html>
