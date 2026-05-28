@@ -1756,40 +1756,52 @@ function goTo(n, fromFirebase) {
   // Broadcast page to Firebase (teacher only)
   if (!FOLLOW_MODE && !fromFirebase) {
     db.ref(SESSION + '/presenter/page').set(cur);
-    // 小智语音：本地运行时自动朗读
-    const _txt = cur === 1 ? 'SELF_INTRO' : slides[cur-1].innerText.replace(/\s+/g, ' ').trim().slice(0, 400);
-    fetch('http://localhost:3000/api/speak-slide', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({text: _txt, slide: cur})
-    }).catch(() => {});
+    // 小智语音：仅本地运行时触发（GitHub Pages 不触发）
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+      const _txt = cur === 1 ? 'SELF_INTRO' : slides[cur-1].innerText.replace(/\s+/g, ' ').trim().slice(0, 400);
+      fetch('http://localhost:3000/api/speak-slide', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({text: _txt, slide: cur})
+      }).catch(() => {});
+    }
   }
 }
 
 if (FOLLOW_MODE) {
-  // Allow backward navigation only, block forward
+  let teacherPage = 1; // max page students can reach
+
+  const tryGo = n => {
+    if (n < 1) return;
+    if (n > teacherPage) return; // can't go beyond teacher's current page
+    goTo(n);
+  };
+
   document.addEventListener('wheel', e => {
     const active = document.querySelector('.slide.active');
     if (!active) return;
     const atTop = active.scrollTop === 0;
     const atBot = active.scrollTop + active.clientHeight >= active.scrollHeight - 2;
-    if (e.deltaY < 0 && atTop) { e.preventDefault(); goTo(cur - 1); return; } // allow backward
-    if (e.deltaY > 0 && atBot) { e.preventDefault(); e.stopImmediatePropagation(); return; } // block forward
+    if (e.deltaY < 0 && atTop) { e.preventDefault(); tryGo(cur - 1); return; }
+    if (e.deltaY > 0 && atBot) { e.preventDefault(); tryGo(cur + 1); return; }
     active.scrollTop += e.deltaY; e.preventDefault();
   }, {passive:false});
   document.addEventListener('keydown', e => {
-    if (['ArrowLeft'].includes(e.key)) { e.preventDefault(); goTo(cur - 1); } // allow backward
-    if (['ArrowRight',' '].includes(e.key)) { e.preventDefault(); e.stopImmediatePropagation(); } // block forward
+    if (['ArrowLeft'].includes(e.key))  { e.preventDefault(); tryGo(cur - 1); }
+    if (['ArrowRight',' '].includes(e.key)) { e.preventDefault(); tryGo(cur + 1); }
   }, {capture:true});
   document.addEventListener('click', e => {
     if (e.target.closest('button,input,textarea,a,.flip,.step,.chk,.ctr-btn,label,select')) return;
-    if (e.clientX < window.innerWidth * 0.3) goTo(cur - 1); // allow backward (left)
-    if (e.clientX > window.innerWidth * 0.7) { e.preventDefault(); e.stopImmediatePropagation(); } // block forward (right)
+    if (e.clientX < window.innerWidth * 0.3) tryGo(cur - 1);
+    if (e.clientX > window.innerWidth * 0.7) tryGo(cur + 1);
   });
-  // Listen to presenter page and sync
+
+  // Teacher page sync — update teacherPage cap AND jump students to teacher's page
   db.ref(SESSION + '/presenter/page').on('value', snap => {
     const page = snap.val();
-    if (page && page !== cur) goTo(page, true);
+    if (!page) return;
+    if (page > teacherPage) teacherPage = page; // teacher advanced, unlock new pages
+    if (page !== cur) goTo(page, true);          // snap to teacher's page
   });
 } else {
   /* Route wheel scroll to active slide */
