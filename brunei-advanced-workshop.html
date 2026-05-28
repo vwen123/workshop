@@ -1756,28 +1756,35 @@ function goTo(n, fromFirebase) {
   // Broadcast page to Firebase (teacher only)
   if (!FOLLOW_MODE && !fromFirebase) {
     db.ref(SESSION + '/presenter/page').set(cur);
+    // 小智语音：本地运行时自动朗读
+    const _txt = cur === 1 ? 'SELF_INTRO' : slides[cur-1].innerText.replace(/\s+/g, ' ').trim().slice(0, 400);
+    fetch('http://localhost:3000/api/speak-slide', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({text: _txt, slide: cur})
+    }).catch(() => {});
   }
 }
 
 if (FOLLOW_MODE) {
-  // Allow forward navigation, block backward only
+  // Allow backward navigation only, block forward
   document.addEventListener('wheel', e => {
     const active = document.querySelector('.slide.active');
     if (!active) return;
     const atTop = active.scrollTop === 0;
     const atBot = active.scrollTop + active.clientHeight >= active.scrollHeight - 2;
-    if (e.deltaY < 0 && atTop) { e.preventDefault(); e.stopImmediatePropagation(); return; } // block backward
-    if (e.deltaY > 0 && atBot) { e.preventDefault(); goTo(cur + 1); return; } // allow forward
+    if (e.deltaY < 0 && atTop) { e.preventDefault(); goTo(cur - 1); return; } // allow backward
+    if (e.deltaY > 0 && atBot) { e.preventDefault(); e.stopImmediatePropagation(); return; } // block forward
     active.scrollTop += e.deltaY; e.preventDefault();
   }, {passive:false});
   document.addEventListener('keydown', e => {
-    if (['ArrowLeft'].includes(e.key)) { e.preventDefault(); e.stopImmediatePropagation(); } // block backward
-    if (['ArrowRight',' '].includes(e.key)) { e.preventDefault(); goTo(cur + 1); } // allow forward
+    if (['ArrowLeft'].includes(e.key)) { e.preventDefault(); goTo(cur - 1); } // allow backward
+    if (['ArrowRight',' '].includes(e.key)) { e.preventDefault(); e.stopImmediatePropagation(); } // block forward
   }, {capture:true});
   document.addEventListener('click', e => {
     if (e.target.closest('button,input,textarea,a,.flip,.step,.chk,.ctr-btn,label,select')) return;
-    if (e.clientX < window.innerWidth * 0.3) { e.preventDefault(); e.stopImmediatePropagation(); return; } // block backward (left)
-    if (e.clientX > window.innerWidth * 0.7) goTo(cur + 1); // allow forward (right)
+    if (e.clientX < window.innerWidth * 0.3) goTo(cur - 1); // allow backward (left)
+    if (e.clientX > window.innerWidth * 0.7) { e.preventDefault(); e.stopImmediatePropagation(); } // block forward (right)
   });
   // Listen to presenter page and sync
   db.ref(SESSION + '/presenter/page').on('value', snap => {
