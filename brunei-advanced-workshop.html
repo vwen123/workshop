@@ -1760,20 +1760,25 @@ function goTo(n, fromFirebase) {
 }
 
 if (FOLLOW_MODE) {
-  // Block ALL navigation — capture phase so nothing slips through
-  const _nav = e => { e.preventDefault(); e.stopImmediatePropagation(); };
-  document.addEventListener('wheel',      _nav, {passive:false, capture:true});
-  document.addEventListener('touchmove',  _nav, {passive:false, capture:true});
+  // Allow forward navigation, block backward only
+  document.addEventListener('wheel', e => {
+    const active = document.querySelector('.slide.active');
+    if (!active) return;
+    const atTop = active.scrollTop === 0;
+    const atBot = active.scrollTop + active.clientHeight >= active.scrollHeight - 2;
+    if (e.deltaY < 0 && atTop) { e.preventDefault(); e.stopImmediatePropagation(); return; } // block backward
+    if (e.deltaY > 0 && atBot) { e.preventDefault(); goTo(cur + 1); return; } // allow forward
+    active.scrollTop += e.deltaY; e.preventDefault();
+  }, {passive:false});
   document.addEventListener('keydown', e => {
-    if (['ArrowRight','ArrowLeft','ArrowUp','ArrowDown',' '].includes(e.key))
-      _nav(e);
+    if (['ArrowLeft'].includes(e.key)) { e.preventDefault(); e.stopImmediatePropagation(); } // block backward
+    if (['ArrowRight',' '].includes(e.key)) { e.preventDefault(); goTo(cur + 1); } // allow forward
   }, {capture:true});
-  // clicks: only block nav areas (left/right 30%), allow buttons/inputs
-  document.addEventListener('pointerdown', e => {
+  document.addEventListener('click', e => {
     if (e.target.closest('button,input,textarea,a,.flip,.step,.chk,.ctr-btn,label,select')) return;
-    const x = e.clientX / window.innerWidth;
-    if (x < 0.3 || x > 0.7) _nav(e);
-  }, {capture:true});
+    if (e.clientX < window.innerWidth * 0.3) { e.preventDefault(); e.stopImmediatePropagation(); return; } // block backward (left)
+    if (e.clientX > window.innerWidth * 0.7) goTo(cur + 1); // allow forward (right)
+  });
   // Listen to presenter page and sync
   db.ref(SESSION + '/presenter/page').on('value', snap => {
     const page = snap.val();
