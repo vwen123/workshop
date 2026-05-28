@@ -961,19 +961,34 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
 
 <!-- ============ BONUS MODULE: CHROME BUILT-IN AI ============ -->
 <section class="slide fb" data-slide="MOD_CHROME" data-section="Chrome Built-in AI">
-  <div class="fb-bg" style="background:linear-gradient(135deg,#1a237e 0%,#0d47a1 40%,#1565c0 70%,#0277bd 100%)"></div>
-  <div class="fb-overlay" style="background:rgba(0,0,0,0.35)"></div>
-  <div class="fb-inner" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;gap:16px">
-    <div style="font-size:64px">🔵</div>
-    <div class="kicker" style="font-size:13px;letter-spacing:3px;color:rgba(255,255,255,0.7)">Bonus Module</div>
-    <div class="display" style="color:#fff;font-size:clamp(40px,5vw,72px);line-height:1.1">Chrome Built-in AI</div>
-    <div class="h3" style="color:rgba(255,255,255,0.8);font-weight:400;margin-top:8px">Ask Gemini · Chrome Skills</div>
+  <div class="fb-bg" style="background:linear-gradient(135deg,#0a0f1e 0%,#0d1b2e 50%,#071624 100%)"></div>
+  <!-- Chrome rainbow top bar -->
+  <div style="position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#EA4335 0%,#FBBC05 33%,#34A853 66%,#4285F4 100%);z-index:2"></div>
+  <!-- Chrome logo decoration -->
+  <div style="position:absolute;right:7%;top:50%;transform:translateY(-50%);width:320px;height:320px;opacity:0.22;pointer-events:none">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <path d="M100,100 L100,10 A90,90 0 0,1 187.94,145 Z" fill="#EA4335"/>
+      <path d="M100,100 L187.94,145 A90,90 0 0,1 12.06,145 Z" fill="#34A853"/>
+      <path d="M100,100 L12.06,145 A90,90 0 0,1 100,10 Z" fill="#FBBC05"/>
+      <circle cx="100" cy="100" r="62" fill="#0a0f1e"/>
+      <circle cx="100" cy="100" r="52" fill="#4285F4"/>
+      <circle cx="100" cy="100" r="38" fill="#0a0f1e"/>
+    </svg>
+  </div>
+  <div class="fb-inner" style="display:flex;flex-direction:column;align-items:flex-start;justify-content:center;height:100%;padding:0 10%;gap:18px">
+    <div class="kicker" style="font-size:13px;letter-spacing:3px;color:rgba(255,255,255,0.55)">Bonus Module</div>
+    <div class="display" style="color:#fff;font-size:clamp(42px,5.5vw,76px);line-height:1.1">Chrome<br>Built-in AI</div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <span style="padding:8px 22px;border-radius:24px;background:rgba(66,133,244,0.2);border:1px solid rgba(66,133,244,0.45);color:#a8c7fa;font-size:16px">Ask Gemini</span>
+      <span style="padding:8px 22px;border-radius:24px;background:rgba(52,168,83,0.18);border:1px solid rgba(52,168,83,0.4);color:#81c995;font-size:16px">Chrome Skills</span>
+      <span style="padding:8px 22px;border-radius:24px;background:rgba(234,67,53,0.18);border:1px solid rgba(234,67,53,0.4);color:#f28b82;font-size:16px">Cross-tab AI</span>
+    </div>
   </div>
 </section>
 
 <!-- CR-1: What is Chrome Built-in Gemini + Setup -->
 <section class="slide" data-slide="CR-1" data-section="Chrome Built-in AI">
-  <div class="si" style="--h1:clamp(26px,3vw,38px);--h2:clamp(22px,2.4vw,30px);--h3:clamp(20px,2vw,26px);--body:clamp(18px,1.8vw,24px);--sm:clamp(15px,1.4vw,20px)">
+  <div class="si" style="--h1:clamp(22px,2.4vw,30px);--h2:clamp(19px,2vw,25px);--h3:clamp(17px,1.7vw,21px);--body:clamp(14px,1.4vw,19px);--sm:clamp(12px,1.1vw,16px)">
     <div class="kicker">Chrome Built-in AI · Ask Gemini</div>
     <div class="h1 mt8">What Is <span class="cyan">Chrome Built-in Gemini</span>?</div>
     <div class="g2 mt28" style="gap:32px;align-items:start">
@@ -1011,7 +1026,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
 
 <!-- CR-2: Try It — 4 Tests -->
 <section class="slide" data-slide="CR-2" data-section="Chrome Built-in AI">
-  <div class="si" style="--h1:clamp(26px,3vw,38px);--h2:clamp(22px,2.4vw,30px);--h3:clamp(20px,2vw,26px);--body:clamp(18px,1.8vw,24px);--sm:clamp(15px,1.4vw,20px)">
+  <div class="si" style="--h1:clamp(22px,2.4vw,30px);--h2:clamp(19px,2vw,25px);--h3:clamp(17px,1.7vw,21px);--body:clamp(14px,1.4vw,19px);--sm:clamp(12px,1.1vw,16px)">
     <div class="kicker">Chrome Built-in AI · Try It</div>
     <div class="h1 mt8">Four <span class="cyan">Live Demos</span></div>
     <div class="g4 mt28">
@@ -1036,45 +1051,43 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
         <div class="sm" style="color:var(--w3);line-height:1.6">Upload a photo<br>Ask: <em>"Redesign this image in 1:1 ratio"</em></div>
       </div>
     </div>
-    <div class="card mt20" style="padding:14px 24px;text-align:center">
-      <div class="sm" style="color:var(--w3)">💡 Use <strong>@</strong> to specify a data source (current page / tab) · Use <strong>/</strong> to specify an action (generate image · organise · summarise)</div>
-    </div>
+
   </div>
 </section>
 
 <!-- CR-3: Cross-tab Table (standalone) -->
 <section class="slide" data-slide="CR-3" data-section="Chrome Built-in AI">
-  <div class="si" style="--h1:clamp(26px,3vw,38px);--h2:clamp(22px,2.4vw,30px);--h3:clamp(20px,2vw,26px);--body:clamp(18px,1.8vw,24px);--sm:clamp(15px,1.4vw,20px)">
+  <div class="si" style="--h1:clamp(22px,2.4vw,30px);--h2:clamp(19px,2vw,25px);--h3:clamp(17px,1.7vw,21px);--body:clamp(14px,1.4vw,19px);--sm:clamp(12px,1.1vw,16px)">
     <div class="kicker">Chrome Built-in AI · Cross-tab Feature</div>
     <div class="h1 mt8">Organise <span class="cyan">Multiple Tabs</span> into a Table</div>
-    <div class="g2 mt28" style="gap:32px;align-items:start">
-      <div>
-        <div class="body" style="color:var(--w3);margin-bottom:20px">Chrome's built-in Gemini can <strong>read multiple open tabs at once</strong> and compile the content — no copying needed.</div>
-        <div class="card" style="padding:20px 24px">
-          <div class="h3 cyan" style="margin-bottom:12px">📋 Demo Steps</div>
-          <div style="display:flex;gap:12px;align-items:flex-start;margin-top:10px">
-            <div style="min-width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0">1</div>
-            <div class="body">Open several product pages (different brands / prices)</div>
-          </div>
-          <div style="display:flex;gap:12px;align-items:flex-start;margin-top:12px">
-            <div style="min-width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0">2</div>
-            <div class="body">Open the Gemini sidebar · Use <strong>@</strong> to select all product tabs</div>
-          </div>
-          <div style="display:flex;gap:12px;align-items:flex-start;margin-top:12px">
-            <div style="min-width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0">3</div>
-            <div class="body">Type your prompt → Gemini instantly generates a comparison table</div>
-          </div>
-          <div class="card mt16" style="padding:14px 18px;background:rgba(66,133,244,0.08);border-color:rgba(66,133,244,0.3)">
-            <div class="sm" style="color:var(--w2);font-style:italic">"Compare these massage gun pages — features, price. Put it in a table."</div>
-          </div>
+    <div class="card mt16" style="padding:16px 24px;background:rgba(66,133,244,0.08);border-color:rgba(66,133,244,0.3)">
+      <div class="body" style="color:var(--w2)">Chrome's built-in Gemini can <strong>read multiple open tabs at once</strong> and compile the content — no copying needed.</div>
+    </div>
+    <div class="g2 mt16" style="gap:20px;align-items:start">
+      <div class="card" style="padding:20px 22px">
+        <div class="h3 cyan" style="margin-bottom:12px">📋 Demo Steps</div>
+        <div style="display:flex;gap:12px;align-items:flex-start;margin-top:10px">
+          <div style="min-width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">1</div>
+          <div class="body">Open several product pages (different brands / prices)</div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;margin-top:10px">
+          <div style="min-width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">2</div>
+          <div class="body">Open the Gemini sidebar · Use <strong>@</strong> to select all product tabs</div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;margin-top:10px">
+          <div style="min-width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">3</div>
+          <div class="body">Type your prompt → Gemini generates a comparison table</div>
+        </div>
+        <div class="card mt14" style="padding:12px 16px;background:rgba(66,133,244,0.08);border-color:rgba(66,133,244,0.3)">
+          <div class="sm" style="color:var(--w2);font-style:italic">"Compare these massage gun pages — features, price. Put it in a table."</div>
         </div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:16px">
-        <div class="card" style="padding:20px 24px">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card" style="padding:20px 22px">
           <div class="h3" style="margin-bottom:10px">🏫 Classroom Applications</div>
           <div class="body" style="color:var(--w3);line-height:1.9">Compare multiple learning websites<br>Compile highlights from reference articles<br>Summarise students' work across tabs</div>
         </div>
-        <div class="card" style="padding:20px 24px;background:rgba(52,168,83,0.08);border-color:rgba(52,168,83,0.3)">
+        <div class="card" style="padding:16px 22px;background:rgba(52,168,83,0.08);border-color:rgba(52,168,83,0.3)">
           <div class="h3" style="color:#34a853;margin-bottom:6px">✨ Key Advantage</div>
           <div class="sm" style="color:var(--w3)">No tab-switching · No copy-pasting<br>One prompt, cross-tab intelligence</div>
         </div>
@@ -1085,7 +1098,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
 
 <!-- CR-4: Chrome Skills -->
 <section class="slide" data-slide="CR-4" data-section="Chrome Built-in AI">
-  <div class="si" style="--h1:clamp(26px,3vw,38px);--h2:clamp(22px,2.4vw,30px);--h3:clamp(20px,2vw,26px);--body:clamp(18px,1.8vw,24px);--sm:clamp(15px,1.4vw,20px)">
+  <div class="si" style="--h1:clamp(22px,2.4vw,30px);--h2:clamp(19px,2vw,25px);--h3:clamp(17px,1.7vw,21px);--body:clamp(14px,1.4vw,19px);--sm:clamp(12px,1.1vw,16px)">
     <div class="kicker">Chrome Built-in AI · Chrome Skills</div>
     <div class="h1 mt8">Chrome <span class="cyan">Skills</span> — Zero-Input Automation</div>
     <div class="g2 mt24" style="gap:32px;align-items:start">
@@ -1128,7 +1141,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
 
 <!-- CR-5: @ / Symbols + Build Your Own Skill -->
 <section class="slide" data-slide="CR-5" data-section="Chrome Built-in AI">
-  <div class="si" style="--h1:clamp(26px,3vw,38px);--h2:clamp(22px,2.4vw,30px);--h3:clamp(20px,2vw,26px);--body:clamp(18px,1.8vw,24px);--sm:clamp(15px,1.4vw,20px)">
+  <div class="si" style="--h1:clamp(22px,2.4vw,30px);--h2:clamp(19px,2vw,25px);--h3:clamp(17px,1.7vw,21px);--body:clamp(14px,1.4vw,19px);--sm:clamp(12px,1.1vw,16px)">
     <div class="kicker">Chrome Built-in AI · Must-Know Shortcuts</div>
     <div class="h1 mt8">Two <span class="cyan">Power Symbols</span> + Build Your Own Skill</div>
     <div class="g2 mt24" style="gap:32px;align-items:start">
@@ -1235,70 +1248,56 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
   </div>
 </section>
 
-<!-- CR-6b: Prompt Design Frameworks -->
+<!-- CR-6b: R-T-C-O Prompt Template -->
 <section class="slide" data-slide="CR-6b" data-section="Chrome Built-in AI">
-  <div class="si" style="--h1:clamp(26px,3vw,38px);--h2:clamp(22px,2.4vw,30px);--h3:clamp(19px,1.9vw,25px);--body:clamp(16px,1.7vw,22px);--sm:clamp(14px,1.3vw,18px)">
-    <div class="kicker">Chrome Built-in AI · Prompt Design</div>
-    <div class="h1 mt8">Design <span class="cyan">Your Own Prompt</span></div>
-    <div class="g2 mt24" style="gap:28px;align-items:stretch">
+  <div class="si" style="--h1:clamp(26px,3vw,38px);--h2:clamp(22px,2.4vw,30px);--h3:clamp(20px,2vw,26px);--body:clamp(17px,1.7vw,22px);--sm:clamp(14px,1.3vw,18px);display:flex;flex-direction:column;align-items:center">
+    <div class="kicker" style="align-self:flex-start">Chrome Built-in AI · Prompt Design</div>
+    <div class="h1 mt8" style="align-self:flex-start">Design <span class="cyan">Your Own Prompt</span></div>
 
-      <!-- LEFT: R-T-C-O -->
-      <div class="card" style="padding:28px;display:flex;flex-direction:column;gap:16px">
-        <div>
-          <div class="h3 cyan" style="margin-bottom:6px">⚡ R-T-C-O · Quick Template</div>
-          <div class="sm" style="color:var(--w3)">4 lines. Works for almost anything.</div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:10px;flex:1">
-          <div style="display:flex;gap:12px;align-items:flex-start">
-            <div style="min-width:32px;height:32px;border-radius:8px;background:rgba(66,133,244,0.2);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">R</div>
-            <div><div class="h3" style="font-size:17px">Role</div><div class="sm" style="color:var(--w3);margin-top:3px">You are [expert / profession]</div></div>
-          </div>
-          <div style="display:flex;gap:12px;align-items:flex-start">
-            <div style="min-width:32px;height:32px;border-radius:8px;background:rgba(66,133,244,0.2);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">T</div>
-            <div><div class="h3" style="font-size:17px">Task</div><div class="sm" style="color:var(--w3);margin-top:3px">What to do — e.g. rewrite the following paragraph</div></div>
-          </div>
-          <div style="display:flex;gap:12px;align-items:flex-start">
-            <div style="min-width:32px;height:32px;border-radius:8px;background:rgba(66,133,244,0.2);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">C</div>
-            <div><div class="h3" style="font-size:17px">Constraint</div><div class="sm" style="color:var(--w3);margin-top:3px">How to do it — e.g. keep it professional and concise</div></div>
-          </div>
-          <div style="display:flex;gap:12px;align-items:flex-start">
-            <div style="min-width:32px;height:32px;border-radius:8px;background:rgba(66,133,244,0.2);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">O</div>
-            <div><div class="h3" style="font-size:17px">Output</div><div class="sm" style="color:var(--w3);margin-top:3px">What you want — e.g. give me 3 versions</div></div>
+    <div class="card mt24" style="padding:36px 48px;width:100%;max-width:780px">
+      <div style="text-align:center;margin-bottom:28px">
+        <div style="font-size:clamp(28px,3.5vw,46px);font-weight:800;letter-spacing:6px;color:var(--cyan)">R · T · C · O</div>
+        <div class="body mt6" style="color:var(--w3)">Works for almost anything.</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:16px 18px;background:rgba(255,255,255,0.04);border-radius:12px;border:1px solid rgba(255,255,255,0.08)">
+          <div style="min-width:44px;height:44px;border-radius:10px;background:rgba(66,133,244,0.2);color:#4285F4;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px;flex-shrink:0">R</div>
+          <div>
+            <div class="h3" style="font-size:19px">Role</div>
+            <div class="sm mt4" style="color:var(--w3)">You are [expert / profession]</div>
           </div>
         </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:16px 18px;background:rgba(255,255,255,0.04);border-radius:12px;border:1px solid rgba(255,255,255,0.08)">
+          <div style="min-width:44px;height:44px;border-radius:10px;background:rgba(234,67,53,0.2);color:#EA4335;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px;flex-shrink:0">T</div>
+          <div>
+            <div class="h3" style="font-size:19px">Task</div>
+            <div class="sm mt4" style="color:var(--w3)">What to do — e.g. rewrite the following paragraph</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:16px 18px;background:rgba(255,255,255,0.04);border-radius:12px;border:1px solid rgba(255,255,255,0.08)">
+          <div style="min-width:44px;height:44px;border-radius:10px;background:rgba(251,188,5,0.2);color:#FBBC05;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px;flex-shrink:0">C</div>
+          <div>
+            <div class="h3" style="font-size:19px">Constraint</div>
+            <div class="sm mt4" style="color:var(--w3)">How to do it — e.g. keep it professional and concise</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:16px 18px;background:rgba(255,255,255,0.04);border-radius:12px;border:1px solid rgba(255,255,255,0.08)">
+          <div style="min-width:44px;height:44px;border-radius:10px;background:rgba(52,168,83,0.2);color:#34A853;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px;flex-shrink:0">O</div>
+          <div>
+            <div class="h3" style="font-size:19px">Output</div>
+            <div class="sm mt4" style="color:var(--w3)">What you want — e.g. give me 3 versions</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:28px">
         <button class="cr6-btn" id="copy-rtco" onclick="copySkill('rtco')">Copy Template</button>
       </div>
-
-      <!-- RIGHT: Full Structured Template -->
-      <div class="card" style="padding:28px;display:flex;flex-direction:column;gap:14px;background:rgba(66,133,244,0.05);border-color:rgba(66,133,244,0.25)">
-        <div>
-          <div class="h3 cyan" style="margin-bottom:6px">🧩 Full Structured Template</div>
-          <div class="sm" style="color:var(--w3)">For complex or high-stakes prompts.</div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:10px;flex:1">
-          <div class="card" style="padding:12px 16px;background:rgba(255,255,255,0.05)">
-            <div class="h3" style="font-size:16px;color:var(--cyan)">[ Role ]</div>
-            <div class="sm" style="color:var(--w3);margin-top:4px">You are a [domain expert / specific profession]</div>
-          </div>
-          <div class="card" style="padding:12px 16px;background:rgba(255,255,255,0.05)">
-            <div class="h3" style="font-size:16px;color:var(--cyan)">[ Core Goal ]</div>
-            <div class="sm" style="color:var(--w3);margin-top:4px">Process [input] → convert into [desired format / outcome]</div>
-          </div>
-          <div class="card" style="padding:12px 16px;background:rgba(255,255,255,0.05)">
-            <div class="h3" style="font-size:16px;color:var(--cyan)">[ Guidelines ]</div>
-            <div class="sm" style="color:var(--w3);margin-top:4px">① Style / accuracy &nbsp;② Structure / format &nbsp;③ Edge cases</div>
-          </div>
-          <div class="card" style="padding:12px 16px;background:rgba(255,255,255,0.05)">
-            <div class="h3" style="font-size:16px;color:var(--cyan)">[ Output Checklist ]</div>
-            <div class="sm" style="color:var(--w3);margin-top:4px">Must include components A, B, C…</div>
-          </div>
-        </div>
-        <button class="cr6-btn" id="copy-full" onclick="copySkill('full')">Copy Template</button>
-      </div>
-
     </div>
   </div>
 </section>
+
 
 <!-- ============ MODULE 2 COVER ============ -->
 <section class="slide fb" data-slide="MOD2" data-section="Module 2 · Animation">
