@@ -592,7 +592,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
       <div>
         
         <div class="steps mt16" id="steps-15">
-          <div class="step on" onclick="advStep('steps-15',0)"><div class="sn">1</div><div class="step-txt"><div class="h3">Upload your teaching material</div></div></div>
+          <div class="step on" onclick="advStep('steps-15',0)"><div class="sn">1</div><div class="step-txt"><div class="h3">Upload flash card and quiz CSV</div></div></div>
           <div class="step" onclick="advStep('steps-15',1)"><div class="sn">2</div><div class="step-txt"><div class="h3">Click "Create interactive learning page"</div></div></div>
           <div class="step" onclick="advStep('steps-15',2)"><div class="sn">3</div><div class="step-txt"><div class="h3">Choose format → share the link</div></div></div>
         </div>
@@ -611,12 +611,211 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
       <div class="h3 mt8">Build a shareable learning experience</div>
       <div class="t-steps mt16">
         <div class="t-step"><span class="t-arr">①</span> Open Gemini Canvas (personal account)</div>
-        <div class="t-step"><span class="t-arr">②</span> Upload any teaching material</div>
+        <div class="t-step"><span class="t-arr">②</span> Upload flash card and quiz CSV</div>
         <div class="t-step"><span class="t-arr">③</span> Generate an interactive learning page</div>
         <div class="t-step"><span class="t-arr">④</span> Share the link with a partner to test</div>
       </div>
     </div>
-    <div class="body mt28" style="color:var(--w3)">Module 1 complete Great work 🎉</div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 16b: NLM × GEMINI OVERVIEW ============ -->
+<section class="slide" data-slide="16b" data-section="Module 1 · NotebookLM" style="font-size:82%">
+  <div class="si">
+    <div class="kicker">Module 1 · Gemini Integration</div>
+    <div class="h1 mt8">NotebookLM <span class="cyan">× Gemini</span></div>
+    <div class="body mt8">Your notebook just got a brain upgrade. 4 new powers — all built into the sidebar you already know.</div>
+    <div class="g4 mt28">
+      <div class="card" style="padding:24px;text-align:center">
+        <div style="font-size:36px">🧠</div>
+        <div class="h3 mt12">Contextual Memory</div>
+        <div class="body mt8">AI remembers everything you said this session</div>
+      </div>
+      <div class="card" style="padding:24px;text-align:center">
+        <div style="font-size:36px">🎭</div>
+        <div class="h3 mt12">Custom Persona</div>
+        <div class="body mt8">Switch expert roles without re-explaining context</div>
+      </div>
+      <div class="card" style="padding:24px;text-align:center">
+        <div style="font-size:36px">🎨</div>
+        <div class="h3 mt12">Gemini Ecosystem</div>
+        <div class="body mt8">Text → posters, charts, Word docs in one place</div>
+      </div>
+      <div class="card" style="padding:24px;text-align:center">
+        <div style="font-size:36px">🎧</div>
+        <div class="h3 mt12">Chat as a Source</div>
+        <div class="body mt8">Gemini conversations become free NLM sources</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 16c: FEATURE 1 - CONTEXTUAL MEMORY ============ -->
+<section class="slide" data-slide="16c" data-section="Module 1 · NotebookLM" style="font-size:82%">
+  <div class="si">
+    <div class="kicker">Module 1 · Gemini Power 1 of 4</div>
+    <div class="h1 mt8">🧠 <span class="cyan">Contextual Memory</span></div>
+    <div class="g2 mt24 ga">
+      <div>
+        <div class="card" style="padding:24px">
+          <div class="h3">Your AI remembers everything you said this session.</div>
+          <div class="body mt12">Before Gemini, each question in NLM was a fresh start. Now Gemini follows your train of thought and builds on every step you've taken.</div>
+          <div class="body mt16" style="color:var(--amber);font-weight:600">Core advantage</div>
+          <div class="body mt8">No more copy-pasting background context. Your AI works like a real teaching assistant — pushing your lesson design deeper, prompt by prompt.</div>
+        </div>
+      </div>
+      <div>
+        <div class="body" style="color:var(--w3);font-weight:600">Example: Upload a Chinese lesson unit</div>
+        <div class="steps mt12" id="steps-16c">
+          <div class="step on" onclick="advStep('steps-16c',0)"><div class="sn">1</div><div class="step-txt"><div class="h3">"Design a 40-minute lesson plan for this unit."</div></div></div>
+          <div class="step" onclick="advStep('steps-16c',1)"><div class="sn">2</div><div class="step-txt"><div class="h3">"Change the second activity into a practice exercise for lower-ability students."</div></div></div>
+          <div class="step" onclick="advStep('steps-16c',2)"><div class="sn">3</div><div class="step-txt"><div class="h3">"Based on that exercise, write a short message to parents about tonight's parent-child reading activity."</div></div></div>
+        </div>
+        <div class="body mt16" style="color:var(--w3)">Three prompts. One context. Lesson plan → differentiation → parent message — no re-explaining needed.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 16d: FEATURE 2 - CUSTOM PERSONA ============ -->
+<section class="slide" data-slide="16d" data-section="Module 1 · NotebookLM" style="font-size:82%">
+  <div class="si">
+    <div class="kicker">Module 1 · Gemini Power 2 of 4</div>
+    <div class="h1 mt8">🎭 <span class="cyan">Custom Persona</span></div>
+    <div class="g2 mt24 ga">
+      <div>
+        <div class="card" style="padding:24px">
+          <div class="h3">Same materials. Different expert. One switch.</div>
+          <div class="body mt12">Set a persona for your notebook — Gemini responds in exactly that role, tone, and level of language every time.</div>
+          <div class="body mt16" style="color:var(--amber);font-weight:600">Core advantage</div>
+          <div class="body mt8">The same batch of lesson materials can generate beginner-friendly explanations in the morning and exam-level questions in the afternoon.</div>
+        </div>
+      </div>
+      <div>
+        <div class="body" style="color:var(--w3);font-weight:600">Example: Same Chinese lesson, two personas</div>
+        <div class="card mt12" style="padding:20px;border-left:3px solid #4caf8a">
+          <div class="h3" style="color:#4caf8a">🟢 Lower Primary Reading Guide</div>
+          <div class="body mt8" style="font-style:italic;color:var(--w3)">"You are a warm reading guide for Primary 2 students. Explain each vocabulary word simply, give one example sentence, and add a friendly emoji."</div>
+          <div class="body mt8">→ Casual tone · short sentences · emoji-friendly</div>
+        </div>
+        <div class="card mt12" style="padding:20px;border-left:3px solid var(--cyan)">
+          <div class="h3" style="color:var(--cyan)">🔵 PSLE Question Setter</div>
+          <div class="body mt8" style="font-style:italic;color:var(--w3)">"You are a strict PSLE-level question setter. Generate 5 comprehension questions that require inference — no straightforward recall."</div>
+          <div class="body mt8">→ Formal · exam-standard · high-order thinking</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 16e: FEATURE 3 - GEMINI ECOSYSTEM ============ -->
+<section class="slide" data-slide="16e" data-section="Module 1 · NotebookLM" style="font-size:82%">
+  <div class="si">
+    <div class="kicker">Module 1 · Gemini Power 3 of 4</div>
+    <div class="h1 mt8">🎨 <span class="cyan">Gemini Ecosystem</span></div>
+    <div class="g2 mt24 ga">
+      <div>
+        <div class="card" style="padding:24px">
+          <div class="h3">From text to visual — without leaving the sidebar.</div>
+          <div class="body mt12">Before Gemini, NLM only output plain text. Now you can go directly from notebook content to posters, charts, and documents — all in one place.</div>
+          <div class="body mt16" style="color:var(--amber);font-weight:600">Core advantage</div>
+          <div class="body mt8">No more copy-pasting between tools. From "read the text" to "publish the poster" is one workflow, not three separate apps.</div>
+        </div>
+      </div>
+      <div>
+        <div class="body" style="color:var(--w3);font-weight:600">Example: Upload a science experiment text</div>
+        <div class="card mt12" style="padding:20px">
+          <div style="font-size:24px">🖼️</div>
+          <div class="h3 mt8">Visual Teaching Poster</div>
+          <div class="body mt8" style="font-style:italic;color:var(--w3)">"Turn the experiment steps in Chapter 3 into a 4-panel comic-style teaching poster."</div>
+        </div>
+        <div class="card mt12" style="padding:20px">
+          <div style="font-size:24px">📊</div>
+          <div class="h3 mt8">Data Chart for Assessment</div>
+          <div class="body mt8" style="font-style:italic;color:var(--w3)">"Generate a bar chart from the comparison data in this text — ready to paste into an exam paper."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 16f: FEATURE 4 - CHAT AS SOURCE ============ -->
+<section class="slide" data-slide="16f" data-section="Module 1 · NotebookLM" style="font-size:82%">
+  <div class="si">
+    <div class="kicker">Module 1 · Gemini Power 4 of 4</div>
+    <div class="h1 mt8">🎧 <span class="cyan">Chat as a Source</span></div>
+    <div class="g2 mt24 ga">
+      <div>
+        <div class="card" style="padding:24px">
+          <div class="h3">Your Gemini conversation becomes an NLM source — for free.</div>
+          <div class="body mt12">Every Gemini chat saved in your notebook becomes an independent source. It does <strong>not</strong> count toward your 50-document limit.</div>
+          <div class="body mt16" style="color:var(--amber);font-weight:600">Core advantage</div>
+          <div class="body mt8">Tick that conversation source when generating an Audio Overview — and your podcast becomes a real dialogue, not a textbook recitation.</div>
+        </div>
+      </div>
+      <div>
+        <div class="body" style="color:var(--w3);font-weight:600">Example: Chinese lesson 《The Lost Golden Key》</div>
+        <div class="steps mt12" id="steps-16f">
+          <div class="step on" onclick="advStep('steps-16f',0)"><div class="sn">1</div><div class="step-txt"><div class="h3">Start a Gemini debate: "Should the main character return the key?"</div></div></div>
+          <div class="step" onclick="advStep('steps-16f',1)"><div class="sn">2</div><div class="step-txt"><div class="h3">The conversation is saved as a source automatically</div></div></div>
+          <div class="step" onclick="advStep('steps-16f',2)"><div class="sn">3</div><div class="step-txt"><div class="h3">Tick the conversation source → Generate Audio Overview</div></div></div>
+          <div class="step" onclick="advStep('steps-16f',3)"><div class="sn">4</div><div class="step-txt"><div class="h3">Send to class group as a listening &amp; extension activity</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 16g: WARNING ============ -->
+<section class="slide" data-slide="16g" data-section="Module 1 · NotebookLM" style="font-size:82%">
+  <div class="si" style="text-align:center">
+    <div class="kicker" style="color:#ff7b7b">⚠️ Watch Out</div>
+    <div class="h1 mt8">Don't Mix <span style="color:#ff7b7b">Public Sharing</span> with <span class="cyan">Private Chat</span></div>
+    <div class="body mt16" style="max-width:680px;margin:0 auto">If you plan to use Gemini for deep lesson planning — <strong>do not share that notebook's link</strong> with other teachers. The moment you make it public, it disappears from your Gemini sidebar.</div>
+    <div class="g2 mt28" style="max-width:820px;margin:0 auto;gap:24px">
+      <div class="card" style="padding:28px;border:2px solid var(--cyan);text-align:left">
+        <div class="h3 cyan">✅ Private Notebook + Gemini Chat</div>
+        <div class="body mt12">Your personal lesson planning, differentiation, and question generation.</div>
+        <div class="body mt8" style="color:var(--w3)">Gemini can see it. You iterate freely.</div>
+      </div>
+      <div class="card" style="padding:28px;border:2px solid #ff7b7b;text-align:left">
+        <div class="h3" style="color:#ff7b7b">📤 Shared Notebook (public link)</div>
+        <div class="body mt12">Copy a clean notebook → share the link with colleagues.</div>
+        <div class="body mt8" style="color:var(--w3)">Keep this completely separate from your working copy.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 16h: DEMO + TRY IT ============ -->
+<section class="slide" data-slide="16h" data-section="Module 1 · NotebookLM" data-padlet="5" style="font-size:82%">
+  <div class="si">
+    <div class="kicker">Module 1 · Demo + Try It</div>
+    <div class="h1 mt8">Upload → Chat → <span class="cyan">Canvas</span></div>
+    <div class="g2 mt24 ga">
+      <div>
+        <div class="body" style="color:var(--w3);font-weight:600">Demo first — watch the full flow</div>
+        <div class="steps mt12" id="steps-16h">
+          <div class="step on" onclick="advStep('steps-16h',0)"><div class="sn">1</div><div class="step-txt"><div class="h3">Upload one of your teaching slides into NLM</div></div></div>
+          <div class="step" onclick="advStep('steps-16h',1)"><div class="sn">2</div><div class="step-txt"><div class="h3">Open Gemini chat → "Turn this into an interactive learning page with vocabulary, comprehension, grammar, and writing sections"</div></div></div>
+          <div class="step" onclick="advStep('steps-16h',2)"><div class="sn">3</div><div class="step-txt"><div class="h3">Gemini opens Canvas → preview the interactive page</div></div></div>
+          <div class="step" onclick="advStep('steps-16h',3)"><div class="sn">4</div><div class="step-txt"><div class="h3">Copy the shareable link</div></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="task-card" style="padding:28px">
+          <div class="kicker" style="color:var(--amber)">🎯 Your Turn — Padlet #5</div>
+          <div class="h3 mt8">Build your own interactive lesson page</div>
+          <div class="t-steps mt16">
+            <div class="t-step"><span class="t-arr">①</span> Upload one of your own teaching slides</div>
+            <div class="t-step"><span class="t-arr">②</span> Chat with Gemini to generate an interactive page</div>
+            <div class="t-step"><span class="t-arr">③</span> Post your Canvas link to Padlet 📸</div>
+          </div>
+          <div class="body mt16" style="color:var(--w3)">⏱ 12 minutes</div>
+        </div>
+        <div class="body mt20" style="color:var(--w3);text-align:center">Module 1 complete · Great work 🎉</div>
+      </div>
+    </div>
   </div>
 </section>
 
