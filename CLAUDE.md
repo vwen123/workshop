@@ -34,6 +34,7 @@
 - [x] 云端保存 toast 提示
 - [x] 工作坊 / 卡片永久持久化到 Firestore
 - [x] 学生资源按推送时间戳排序
+- [x] 修复 teacher-panel.html 空白 bug（2026-05-28）：`database.rules.json` 补加 `workshop` 路径权限；代码加 `.catch()` fallback 防止 Firebase 失败时页面全空
 
 ### brunei-foundation-workshop.html（2026-05-27 大幅迭代）
 - [x] 共 30 张简报，GitHub Pages 部署：https://vwen123.github.io/workshop/brunei-foundation-workshop.html
