@@ -975,10 +975,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
       <circle cx="100" cy="100" r="38" fill="#0a0f1e"/>
     </svg>
   </div>
-  <div class="fb-inner" style="display:flex;flex-direction:column;align-items:flex-start;justify-content:center;height:100%;padding:0 10%;gap:18px">
+  <div class="fb-inner" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;height:100%;padding:0 10%;gap:18px">
     <div class="kicker" style="font-size:13px;letter-spacing:3px;color:rgba(255,255,255,0.55)">Bonus Module</div>
     <div class="display" style="color:#fff;font-size:clamp(42px,5.5vw,76px);line-height:1.1">Chrome<br>Built-in AI</div>
-    <div style="color:rgba(255,255,255,0.85);font-size:clamp(24px,3vw,40px);font-weight:400;letter-spacing:4px">Chrome Skill</div>
+    <div style="color:#ffffff;font-size:clamp(24px,3vw,40px);font-weight:400;letter-spacing:4px">Chrome Skill</div>
     <div style="display:flex;gap:14px;flex-wrap:wrap">
       <span style="padding:8px 22px;border-radius:24px;background:rgba(66,133,244,0.2);border:1px solid rgba(66,133,244,0.45);color:#a8c7fa;font-size:16px">Ask Gemini</span>
       <span style="padding:8px 22px;border-radius:24px;background:rgba(52,168,83,0.18);border:1px solid rgba(52,168,83,0.4);color:#81c995;font-size:16px">Chrome Skills</span>
@@ -1507,26 +1507,56 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
   <div class="si">
     <div class="kicker">Module 3 · Teaching Applications</div>
     <div class="h1 mt8">3 Ways to Use It for <span class="amber">Teaching</span></div>
-    <div class="body mt8">Tap each card to see how</div>
-    <div class="g3 mt24" style="height:240px">
-      <div class="flip" onclick="this.classList.toggle('flipped')">
-        <div class="flip-i">
-          <div class="ff"><div style="font-size:28px">📊</div><div class="h3 mt8">Infographic Poster</div><div class="flip-hint mt8">tap to flip</div></div>
-          <div class="fb2"><div class="h3 amb" style="font-size:15px">Step by step:</div><div class="body mt8" style="font-size:13px">"Create image" → select Infographic template → paste your teaching content → generate</div></div>
+    <div class="g3 mt20" style="gap:20px;align-items:start">
+
+      <!-- Poster -->
+      <div class="card" style="padding:22px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:28px">🖼️</span>
+          <div class="h3 amb" style="font-size:19px">Poster</div>
+        </div>
+        <div class="sm" style="color:var(--w3)">Quick prompt</div>
+        <div class="card" style="padding:12px 14px;background:rgba(251,188,5,0.07);border-color:rgba(251,188,5,0.3)">
+          <div class="sm" style="color:var(--w2);line-height:1.6;font-style:italic">Based on the information above, create a promotional poster</div>
+        </div>
+        <div class="sm" style="color:var(--w3)">Example prompt</div>
+        <div class="card" style="padding:12px 14px;background:rgba(251,188,5,0.04);border-color:rgba(251,188,5,0.2)">
+          <div class="sm" style="color:var(--w2);line-height:1.7;font-style:italic">Design a 2026 enrolment recruitment poster for An Ning Primary School. Highlight the school's unique features. Make the tagline fun and engaging — something that makes parents excited to bring their children.</div>
         </div>
       </div>
-      <div class="flip" onclick="this.classList.toggle('flipped')">
-        <div class="flip-i">
-          <div class="ff"><div style="font-size:28px">🎞️</div><div class="h3 mt8">Step Breakdown</div><div class="flip-hint mt8">tap to flip</div></div>
-          <div class="fb2"><div class="h3 amb" style="font-size:15px">Comic / Action sequences:</div><div class="body mt8" style="font-size:13px">Describe each step + add <span class="cyan">"3:1 wide ratio"</span> to your prompt. Great for PE, science procedures, cooking steps.</div></div>
+
+      <!-- Infographic -->
+      <div class="card" style="padding:22px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:28px">📊</span>
+          <div class="h3 amb" style="font-size:19px">Infographic</div>
+        </div>
+        <div class="sm" style="color:var(--w3)">Quick prompt</div>
+        <div class="card" style="padding:12px 14px;background:rgba(251,188,5,0.07);border-color:rgba(251,188,5,0.3)">
+          <div class="sm" style="color:var(--w2);line-height:1.6;font-style:italic">Based on the information above, create an infographic</div>
+        </div>
+        <div class="sm" style="color:var(--w3)">Example prompt</div>
+        <div class="card" style="padding:12px 14px;background:rgba(251,188,5,0.04);border-color:rgba(251,188,5,0.2)">
+          <div class="sm" style="color:var(--w2);line-height:1.7;font-style:italic">Create a visually rich infographic on the endangered animal Polar Bear. Search the web for its habitat, diet and unique traits. Use annotated visuals and label boxes — not paragraph sections. Style: bold graphic illustration, photorealistic central animal, diagrams, callout boxes, clean background, layered composition. Make it information-dense and professionally crafted.</div>
         </div>
       </div>
-      <div class="flip" onclick="this.classList.toggle('flipped')">
-        <div class="flip-i">
-          <div class="ff"><div style="font-size:28px">📑</div><div class="h3 mt8">Multi-page Slides</div><div class="flip-hint mt8">tap to flip</div></div>
-          <div class="fb2"><div class="h3 amb" style="font-size:15px">3 must-haves:</div><div class="body mt8" style="font-size:13px">① State the page count · ② Set model to highest · ③ Enable "Create image" mode. Miss one → it won't work.</div></div>
+
+      <!-- Comic -->
+      <div class="card" style="padding:22px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:28px">🎞️</span>
+          <div class="h3 amb" style="font-size:19px">Comic</div>
+        </div>
+        <div class="sm" style="color:var(--w3)">Quick prompt</div>
+        <div class="card" style="padding:12px 14px;background:rgba(251,188,5,0.07);border-color:rgba(251,188,5,0.3)">
+          <div class="sm" style="color:var(--w2);line-height:1.6;font-style:italic">A page of a comic book about "Kong Rong Rang Li" in the style of cute cartoon comic</div>
+        </div>
+        <div class="sm" style="color:var(--w3)">Example prompt</div>
+        <div class="card" style="padding:12px 14px;background:rgba(251,188,5,0.04);border-color:rgba(251,188,5,0.2)">
+          <div class="sm" style="color:var(--w2);line-height:1.7;font-style:italic">Illustrate Li Bai's poem "Quiet Night Thoughts" as a 4-panel cartoon comic strip, easy for children to understand. Depict each line with simple plain-language captions. Full colour, ultra-high quality, 9:16 ratio.</div>
         </div>
       </div>
+
     </div>
   </div>
 </section>
