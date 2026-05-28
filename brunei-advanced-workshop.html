@@ -1507,60 +1507,65 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
   <div class="si">
     <div class="kicker">Module 3 · Teaching Applications</div>
     <div class="h1 mt8">3 Ways to Use It for <span class="amber">Teaching</span></div>
-    <div class="g3 mt20" style="gap:20px;align-items:start">
+    <div class="g3 mt16" style="gap:18px;align-items:start">
 
       <!-- Poster -->
-      <div class="card" style="padding:22px;display:flex;flex-direction:column;gap:12px">
+      <div class="card" style="padding:18px 20px;display:flex;flex-direction:column;gap:10px">
         <div style="display:flex;align-items:center;gap:10px">
-          <span style="font-size:28px">🖼️</span>
-          <div class="h3 amb" style="font-size:19px">Poster</div>
+          <span style="font-size:26px">🖼️</span>
+          <div class="h3 amb" style="font-size:18px">Poster</div>
         </div>
-        <div class="sm" style="color:var(--w3)">Quick prompt</div>
-        <div class="card" style="padding:12px 14px;background:rgba(251,188,5,0.07);border-color:rgba(251,188,5,0.3)">
-          <div class="sm" style="color:var(--w2);line-height:1.6;font-style:italic">Based on the information above, create a promotional poster</div>
+        <div style="font-size:12px;color:var(--w3);text-transform:uppercase;letter-spacing:1px">Quick prompt</div>
+        <div class="card" style="padding:10px 12px;background:rgba(251,188,5,0.07);border-color:rgba(251,188,5,0.3)">
+          <div style="font-size:14px;color:var(--w2);line-height:1.6;font-style:italic">Based on the information above, create a promotional poster</div>
         </div>
-        <div class="sm" style="color:var(--w3)">Example prompt</div>
-        <div class="card" style="padding:12px 14px;background:rgba(251,188,5,0.04);border-color:rgba(251,188,5,0.2)">
-          <div class="sm" style="color:var(--w2);line-height:1.7;font-style:italic">Design a 2026 enrolment recruitment poster for An Ning Primary School. Highlight the school's unique features. Make the tagline fun and engaging — something that makes parents excited to bring their children.</div>
+        <button class="cr6-btn" id="copy-poster-q" onclick="copySkill('poster-q')" style="font-size:13px;padding:6px 14px">Copy</button>
+        <div style="font-size:12px;color:var(--w3);text-transform:uppercase;letter-spacing:1px;margin-top:4px">Example prompt</div>
+        <div class="card" style="padding:10px 12px;background:rgba(251,188,5,0.04);border-color:rgba(251,188,5,0.2)">
+          <div style="font-size:13px;color:var(--w2);line-height:1.7;font-style:italic">Design a 2026 enrolment recruitment poster for An Ning Primary School. Highlight the school's unique features. Make the tagline fun and engaging — something that makes parents excited to bring their children.</div>
         </div>
+        <button class="cr6-btn" id="copy-poster-e" onclick="copySkill('poster-e')" style="font-size:13px;padding:6px 14px">Copy</button>
       </div>
 
       <!-- Infographic -->
-      <div class="card" style="padding:22px;display:flex;flex-direction:column;gap:12px">
+      <div class="card" style="padding:18px 20px;display:flex;flex-direction:column;gap:10px">
         <div style="display:flex;align-items:center;gap:10px">
-          <span style="font-size:28px">📊</span>
-          <div class="h3 amb" style="font-size:19px">Infographic</div>
+          <span style="font-size:26px">📊</span>
+          <div class="h3 amb" style="font-size:18px">Infographic</div>
         </div>
-        <div class="sm" style="color:var(--w3)">Quick prompt</div>
-        <div class="card" style="padding:12px 14px;background:rgba(251,188,5,0.07);border-color:rgba(251,188,5,0.3)">
-          <div class="sm" style="color:var(--w2);line-height:1.6;font-style:italic">Based on the information above, create an infographic</div>
+        <div style="font-size:12px;color:var(--w3);text-transform:uppercase;letter-spacing:1px">Quick prompt</div>
+        <div class="card" style="padding:10px 12px;background:rgba(251,188,5,0.07);border-color:rgba(251,188,5,0.3)">
+          <div style="font-size:14px;color:var(--w2);line-height:1.6;font-style:italic">Based on the information above, create an infographic</div>
         </div>
-        <div class="sm" style="color:var(--w3)">Example prompt</div>
-        <div class="card" style="padding:12px 14px;background:rgba(251,188,5,0.04);border-color:rgba(251,188,5,0.2)">
-          <div class="sm" style="color:var(--w2);line-height:1.7;font-style:italic">Create a visually rich infographic on the endangered animal Polar Bear. Search the web for its habitat, diet and unique traits. Use annotated visuals and label boxes — not paragraph sections. Style: bold graphic illustration, photorealistic central animal, diagrams, callout boxes, clean background, layered composition. Make it information-dense and professionally crafted.</div>
+        <button class="cr6-btn" id="copy-infog-q" onclick="copySkill('infog-q')" style="font-size:13px;padding:6px 14px">Copy</button>
+        <div style="font-size:12px;color:var(--w3);text-transform:uppercase;letter-spacing:1px;margin-top:4px">Example prompt</div>
+        <div class="card" style="padding:10px 12px;background:rgba(251,188,5,0.04);border-color:rgba(251,188,5,0.2)">
+          <div style="font-size:13px;color:var(--w2);line-height:1.7;font-style:italic">Create a visually rich infographic on the endangered animal Polar Bear. Search the web for its habitat, diet and unique traits. Use annotated visuals and label boxes — not paragraph sections. Style: bold graphic illustration, photorealistic central animal, diagrams, callout boxes, clean background, layered composition. Information-dense and professionally crafted.</div>
         </div>
+        <button class="cr6-btn" id="copy-infog-e" onclick="copySkill('infog-e')" style="font-size:13px;padding:6px 14px">Copy</button>
       </div>
 
       <!-- Comic -->
-      <div class="card" style="padding:22px;display:flex;flex-direction:column;gap:12px">
+      <div class="card" style="padding:18px 20px;display:flex;flex-direction:column;gap:10px">
         <div style="display:flex;align-items:center;gap:10px">
-          <span style="font-size:28px">🎞️</span>
-          <div class="h3 amb" style="font-size:19px">Comic</div>
+          <span style="font-size:26px">🎞️</span>
+          <div class="h3 amb" style="font-size:18px">Comic</div>
         </div>
-        <div class="sm" style="color:var(--w3)">Quick prompt</div>
-        <div class="card" style="padding:12px 14px;background:rgba(251,188,5,0.07);border-color:rgba(251,188,5,0.3)">
-          <div class="sm" style="color:var(--w2);line-height:1.6;font-style:italic">A page of a comic book about "Kong Rong Rang Li" in the style of cute cartoon comic</div>
+        <div style="font-size:12px;color:var(--w3);text-transform:uppercase;letter-spacing:1px">Quick prompt</div>
+        <div class="card" style="padding:10px 12px;background:rgba(251,188,5,0.07);border-color:rgba(251,188,5,0.3)">
+          <div style="font-size:14px;color:var(--w2);line-height:1.6;font-style:italic">A page of a comic book about "Kong Rong Rang Li" in the style of cute cartoon comic</div>
         </div>
-        <div class="sm" style="color:var(--w3)">Example prompt</div>
-        <div class="card" style="padding:12px 14px;background:rgba(251,188,5,0.04);border-color:rgba(251,188,5,0.2)">
-          <div class="sm" style="color:var(--w2);line-height:1.7;font-style:italic">Illustrate Li Bai's poem "Quiet Night Thoughts" as a 4-panel cartoon comic strip, easy for children to understand. Depict each line with simple plain-language captions. Full colour, ultra-high quality, 9:16 ratio.</div>
+        <button class="cr6-btn" id="copy-comic-q" onclick="copySkill('comic-q')" style="font-size:13px;padding:6px 14px">Copy</button>
+        <div style="font-size:12px;color:var(--w3);text-transform:uppercase;letter-spacing:1px;margin-top:4px">Example prompt</div>
+        <div class="card" style="padding:10px 12px;background:rgba(251,188,5,0.04);border-color:rgba(251,188,5,0.2)">
+          <div style="font-size:13px;color:var(--w2);line-height:1.7;font-style:italic">Illustrate Li Bai's poem "Quiet Night Thoughts" as a 4-panel cartoon comic strip, easy for children to understand. Depict each line with simple plain-language captions. Full colour, ultra-high quality, 9:16 ratio.</div>
         </div>
+        <button class="cr6-btn" id="copy-comic-e" onclick="copySkill('comic-e')" style="font-size:13px;padding:6px 14px">Copy</button>
       </div>
 
     </div>
   </div>
 </section>
-
 <!-- ============ SLIDE 27: 10-MIN CHALLENGE ============ -->
 <section class="slide" data-slide="27" data-padlet="5" data-section="Module 3 · ChatGPT Image">
   <div class="si" style="text-align:center">
@@ -1937,6 +1942,12 @@ function closePadlet() {}
 </style>
 <script>
 const SKILL_PROMPTS = {
+    "poster-q": "Based on the information above, create a promotional poster",
+  "poster-e": "Design a 2026 enrolment recruitment poster for An Ning Primary School. Highlight the school's unique features. Make the tagline fun and engaging — something that makes parents excited to bring their children.",
+  "infog-q": "Based on the information above, create an infographic",
+  "infog-e": "Create a visually rich infographic on the endangered animal Polar Bear. Search the web for its habitat, diet and unique traits. Use annotated visuals and label boxes — not paragraph sections. Style: bold graphic illustration, photorealistic central animal, diagrams, callout boxes, clean background, layered composition. Information-dense and professionally crafted.",
+  "comic-q": "A page of a comic book about \"Kong Rong Rang Li\" in the style of cute cartoon comic",
+  "comic-e": "Illustrate Li Bai's poem \"Quiet Night Thoughts\" as a 4-panel cartoon comic strip, easy for children to understand. Depict each line with simple plain-language captions. Full colour, ultra-high quality, 9:16 ratio.",
   "001": "You are a content analysis expert specialising in information organisation. Please organise the following content into a clear, bulleted summary with well-defined key points. Prioritise extracting core concepts, important perspectives, key practices and conclusions. Avoid lengthy descriptions. If the content is long, organise it into themed sections; if it follows a process, organise it in sequence. The output should be suitable for meeting minutes, presentation highlights, classroom handouts or quick review.",
   "002": "You are a professional assessment design teacher. Based on the following content, design a set of quiz questions that can assess learners\u2019 understanding of core concepts. Generate 5 multiple-choice questions, each including: the question, 4 options, the correct answer, and an answer explanation. Keep the difficulty moderate \u2014 avoid trivial or purely memory-based questions. Explanations should clearly state why the correct answer is right and briefly address why incorrect options are wrong where necessary. The overall set should be suitable for classroom practice, formative assessment or review activities.",
   "003": "You are a worksheet design expert familiar with primary and secondary school teaching. Based on the following content, design a student worksheet that can be used directly. Include: learning topic, learning objectives, guiding instructions, core tasks, thinking questions, response areas or extension activities. Where appropriate, also include group discussion, observation records, chart organisation or reflective prompts. The overall design should balance students\u2019 comprehension level, practicality and classroom feasibility.",
