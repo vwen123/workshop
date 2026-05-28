@@ -183,6 +183,23 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
   position:relative;
   z-index:1;
 }
+
+/* ── Gemini slides 16b-16h: smaller font to fit full page ── */
+[data-slide="16b"],[data-slide="16c"],[data-slide="16d"],
+[data-slide="16e"],[data-slide="16f"],[data-slide="16g"],[data-slide="16h"] {
+  --h1: clamp(22px, 2.6vw, 34px);
+  --h2: clamp(18px, 2vw, 26px);
+  --h3: clamp(16px, 1.6vw, 22px);
+  --body: clamp(13px, 1.4vw, 20px);
+  --sm: clamp(11px, 1.1vw, 16px);
+}
+[data-slide="16b"] .step-txt .h3,
+[data-slide="16c"] .step-txt .h3,
+[data-slide="16d"] .step-txt .h3,
+[data-slide="16e"] .step-txt .h3,
+[data-slide="16f"] .step-txt .h3,
+[data-slide="16g"] .step-txt .h3,
+[data-slide="16h"] .step-txt .h3 { font-size: 20px !important; }
 </style>
 </head>
 <body>
@@ -620,7 +637,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
 </section>
 
 <!-- ============ SLIDE 16b: NLM × GEMINI OVERVIEW ============ -->
-<section class="slide" data-slide="16b" data-section="Module 1 · NotebookLM" style="font-size:82%">
+<section class="slide" data-slide="16b" data-section="Module 1 · NotebookLM">
   <div class="si">
     <div class="kicker">Module 1 · Gemini Integration</div>
     <div class="h1 mt8">NotebookLM <span class="cyan">× Gemini</span></div>
@@ -651,7 +668,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
 </section>
 
 <!-- ============ SLIDE 16c: FEATURE 1 - CONTEXTUAL MEMORY ============ -->
-<section class="slide" data-slide="16c" data-section="Module 1 · NotebookLM" style="font-size:82%">
+<section class="slide" data-slide="16c" data-section="Module 1 · NotebookLM">
   <div class="si">
     <div class="kicker">Module 1 · Gemini Power 1 of 4</div>
     <div class="h1 mt8">🧠 <span class="cyan">Contextual Memory</span></div>
@@ -678,7 +695,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
 </section>
 
 <!-- ============ SLIDE 16d: FEATURE 2 - CUSTOM PERSONA ============ -->
-<section class="slide" data-slide="16d" data-section="Module 1 · NotebookLM" style="font-size:82%">
+<section class="slide" data-slide="16d" data-section="Module 1 · NotebookLM">
   <div class="si">
     <div class="kicker">Module 1 · Gemini Power 2 of 4</div>
     <div class="h1 mt8">🎭 <span class="cyan">Custom Persona</span></div>
@@ -709,7 +726,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
 </section>
 
 <!-- ============ SLIDE 16e: FEATURE 3 - GEMINI ECOSYSTEM ============ -->
-<section class="slide" data-slide="16e" data-section="Module 1 · NotebookLM" style="font-size:82%">
+<section class="slide" data-slide="16e" data-section="Module 1 · NotebookLM">
   <div class="si">
     <div class="kicker">Module 1 · Gemini Power 3 of 4</div>
     <div class="h1 mt8">🎨 <span class="cyan">Gemini Ecosystem</span></div>
@@ -740,7 +757,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
 </section>
 
 <!-- ============ SLIDE 16f: FEATURE 4 - CHAT AS SOURCE ============ -->
-<section class="slide" data-slide="16f" data-section="Module 1 · NotebookLM" style="font-size:82%">
+<section class="slide" data-slide="16f" data-section="Module 1 · NotebookLM">
   <div class="si">
     <div class="kicker">Module 1 · Gemini Power 4 of 4</div>
     <div class="h1 mt8">🎧 <span class="cyan">Chat as a Source</span></div>
@@ -767,7 +784,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
 </section>
 
 <!-- ============ SLIDE 16g: WARNING ============ -->
-<section class="slide" data-slide="16g" data-section="Module 1 · NotebookLM" style="font-size:82%">
+<section class="slide" data-slide="16g" data-section="Module 1 · NotebookLM">
   <div class="si" style="text-align:center">
     <div class="kicker" style="color:#ff7b7b">⚠️ Watch Out</div>
     <div class="h1 mt8">Don't Mix <span style="color:#ff7b7b">Public Sharing</span> with <span class="cyan">Private Chat</span></div>
@@ -788,7 +805,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
 </section>
 
 <!-- ============ SLIDE 16h: DEMO + TRY IT ============ -->
-<section class="slide" data-slide="16h" data-section="Module 1 · NotebookLM" data-padlet="5" style="font-size:82%">
+<section class="slide" data-slide="16h" data-section="Module 1 · NotebookLM" data-padlet="5">
   <div class="si">
     <div class="kicker">Module 1 · Demo + Try It</div>
     <div class="h1 mt8">Upload → Chat → <span class="cyan">Canvas</span></div>
