@@ -1235,6 +1235,71 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
   </div>
 </section>
 
+<!-- CR-6b: Prompt Design Frameworks -->
+<section class="slide" data-slide="CR-6b" data-section="Chrome Built-in AI">
+  <div class="si" style="--h1:clamp(26px,3vw,38px);--h2:clamp(22px,2.4vw,30px);--h3:clamp(19px,1.9vw,25px);--body:clamp(16px,1.7vw,22px);--sm:clamp(14px,1.3vw,18px)">
+    <div class="kicker">Chrome Built-in AI · Prompt Design</div>
+    <div class="h1 mt8">Design <span class="cyan">Your Own Prompt</span></div>
+    <div class="g2 mt24" style="gap:28px;align-items:stretch">
+
+      <!-- LEFT: R-T-C-O -->
+      <div class="card" style="padding:28px;display:flex;flex-direction:column;gap:16px">
+        <div>
+          <div class="h3 cyan" style="margin-bottom:6px">⚡ R-T-C-O · Quick Template</div>
+          <div class="sm" style="color:var(--w3)">4 lines. Works for almost anything.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;flex:1">
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <div style="min-width:32px;height:32px;border-radius:8px;background:rgba(66,133,244,0.2);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">R</div>
+            <div><div class="h3" style="font-size:17px">Role</div><div class="sm" style="color:var(--w3);margin-top:3px">You are [expert / profession]</div></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <div style="min-width:32px;height:32px;border-radius:8px;background:rgba(66,133,244,0.2);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">T</div>
+            <div><div class="h3" style="font-size:17px">Task</div><div class="sm" style="color:var(--w3);margin-top:3px">What to do — e.g. rewrite the following paragraph</div></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <div style="min-width:32px;height:32px;border-radius:8px;background:rgba(66,133,244,0.2);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">C</div>
+            <div><div class="h3" style="font-size:17px">Constraint</div><div class="sm" style="color:var(--w3);margin-top:3px">How to do it — e.g. keep it professional and concise</div></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <div style="min-width:32px;height:32px;border-radius:8px;background:rgba(66,133,244,0.2);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0">O</div>
+            <div><div class="h3" style="font-size:17px">Output</div><div class="sm" style="color:var(--w3);margin-top:3px">What you want — e.g. give me 3 versions</div></div>
+          </div>
+        </div>
+        <button class="cr6-btn" id="copy-rtco" onclick="copySkill('rtco')">Copy Template</button>
+      </div>
+
+      <!-- RIGHT: Full Structured Template -->
+      <div class="card" style="padding:28px;display:flex;flex-direction:column;gap:14px;background:rgba(66,133,244,0.05);border-color:rgba(66,133,244,0.25)">
+        <div>
+          <div class="h3 cyan" style="margin-bottom:6px">🧩 Full Structured Template</div>
+          <div class="sm" style="color:var(--w3)">For complex or high-stakes prompts.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;flex:1">
+          <div class="card" style="padding:12px 16px;background:rgba(255,255,255,0.05)">
+            <div class="h3" style="font-size:16px;color:var(--cyan)">[ Role ]</div>
+            <div class="sm" style="color:var(--w3);margin-top:4px">You are a [domain expert / specific profession]</div>
+          </div>
+          <div class="card" style="padding:12px 16px;background:rgba(255,255,255,0.05)">
+            <div class="h3" style="font-size:16px;color:var(--cyan)">[ Core Goal ]</div>
+            <div class="sm" style="color:var(--w3);margin-top:4px">Process [input] → convert into [desired format / outcome]</div>
+          </div>
+          <div class="card" style="padding:12px 16px;background:rgba(255,255,255,0.05)">
+            <div class="h3" style="font-size:16px;color:var(--cyan)">[ Guidelines ]</div>
+            <div class="sm" style="color:var(--w3);margin-top:4px">① Style / accuracy &nbsp;② Structure / format &nbsp;③ Edge cases</div>
+          </div>
+          <div class="card" style="padding:12px 16px;background:rgba(255,255,255,0.05)">
+            <div class="h3" style="font-size:16px;color:var(--cyan)">[ Output Checklist ]</div>
+            <div class="sm" style="color:var(--w3);margin-top:4px">Must include components A, B, C…</div>
+          </div>
+        </div>
+        <button class="cr6-btn" id="copy-full" onclick="copySkill('full')">Copy Template</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- ============ MODULE 2 COVER ============ -->
 <section class="slide fb" data-slide="MOD2" data-section="Module 2 · Animation">
   <div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center">
@@ -1850,6 +1915,8 @@ const SKILL_PROMPTS = {
   "003": "You are a worksheet design expert familiar with primary and secondary school teaching. Based on the following content, design a student worksheet that can be used directly. Include: learning topic, learning objectives, guiding instructions, core tasks, thinking questions, response areas or extension activities. Where appropriate, also include group discussion, observation records, chart organisation or reflective prompts. The overall design should balance students\u2019 comprehension level, practicality and classroom feasibility.",
   "004": "You are a visual design prompt expert familiar with AI image generation. Based on the following topic, write a high-quality, specific, ready-to-use AI image generation prompt. The prompt should include descriptions of: subject, scene, composition, style, lighting, colour, texture, atmosphere and aspect ratio. If needed, also include elements you do not want to appear, to improve generation quality. Keep descriptions specific rather than vague, so that the generated results are more stable and closely match the requirements.",
   "005": "You are a professional meeting minutes organiser. Please organise the following transcript or meeting content into formal, clear and well-structured meeting minutes. Include: meeting topic, key discussion points, decisions made, action items, persons responsible and follow-up tracking. If the original content is scattered, organise it by topic and retain important details. The output style should be formal and easy to follow up on.",
+    "rtco": "Role: You are [expert / profession].\nTask: [What to do] — e.g. rewrite the following paragraph.\nConstraint: [How to do it] — e.g. keep it professional and concise.\nOutput: [What you want] — e.g. give me 3 versions.",
+    "full": "[Role]: You are a [domain expert / specific profession].\n[Core Goal]: Please process [input], and convert it into [desired format / outcome].\n[Guidelines]:\n- Guideline 1: [Constraints on style / accuracy]\n- Guideline 2: [Requirements on structure / formatting]\n- Guideline 3: [How to handle special cases]\n[Output Checklist]: Please include [required components A, B, C].",
   "006": "You are a professional transcript editing assistant. Please refine the following transcript by smoothing sentences, correcting typos, completing punctuation and standardising terminology, while preserving the speaker\u2019s original tone and content flow. Colloquial filler words may be moderately removed where appropriate, but the original meaning must not be changed. Where suitable, divide into paragraphs to improve readability. The output should be clean and natural, suitable for conversion into articles or handouts."
 };
 
