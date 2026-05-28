@@ -221,26 +221,9 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
 <div id="pageInfo"></div>
 <div id="hint">← → Space · F fullscreen</div>
 
-<!-- Follow Mode Overlay (hidden in presenter mode) -->
-<div id="follow-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;font-family:'Google Sans',sans-serif">
-  <div style="background:rgba(255,255,255,0.95);border-radius:20px;padding:32px 40px;text-align:center;min-width:260px;box-shadow:0 8px 32px rgba(0,0,0,0.3)">
-    <div style="font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1A73E8;margin-bottom:8px">FOLLOWING PRESENTER</div>
-    <div id="follow-badge" style="font-size:52px;font-weight:700;color:#202124;line-height:1.1">— / —</div>
-    <div style="font-size:13px;color:#9AA0A6;margin-top:4px">Page</div>
-  </div>
-  <div style="background:rgba(255,255,255,0.92);border-radius:16px;padding:16px 24px;text-align:center;min-width:260px">
-    <div style="font-size:12px;color:#5F6368;margin-bottom:10px;font-weight:600">Jump to Page</div>
-    <div style="display:flex;gap:8px;align-items:center;justify-content:center">
-      <input id="jump-input" type="number" min="1" placeholder="Page #"
-        style="width:90px;padding:10px 12px;border:2px solid #DADCE0;border-radius:10px;font-size:18px;text-align:center;outline:none;font-family:inherit"
-        onkeydown="if(event.key==='Enter')doJump()"
-        onfocus="this.style.borderColor='#1A73E8'"
-        onblur="this.style.borderColor='#DADCE0'">
-      <button onclick="doJump()"
-        style="padding:10px 18px;background:#1A73E8;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer">Go</button>
-    </div>
-    <div style="font-size:11px;color:#BDC1C6;margin-top:8px">Teacher only — students follow automatically</div>
-  </div>
+<!-- Follow Mode badge (bottom-left corner, non-intrusive) -->
+<div id="follow-overlay" style="display:none;position:fixed;bottom:18px;left:28px;z-index:200;font-family:'JetBrains Mono',monospace;font-size:var(--xs);color:var(--w4)">
+  <span id="follow-badge">— / —</span>
 </div>
 
 <!-- ============ SLIDE 1: COVER ============ -->
@@ -1827,14 +1810,6 @@ if (FOLLOW_MODE) {
   document.getElementById('padlet-btn').style.display = 'none';
 }
 
-function doJump() {
-  const input = document.getElementById('jump-input');
-  const n = parseInt(input.value);
-  if (n >= 1 && n <= total) {
-    goTo(n);
-    input.value = '';
-  }
-}
 
 // ── STEPS ──
 function advStep(id, idx) {
