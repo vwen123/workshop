@@ -221,10 +221,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--w);height:1
 <div id="pageInfo"></div>
 <div id="hint">← → Space · F fullscreen</div>
 
-<!-- Follow Mode badge (bottom-left corner, non-intrusive) -->
-<div id="follow-overlay" style="display:none;position:fixed;bottom:18px;left:28px;z-index:200;font-family:'JetBrains Mono',monospace;font-size:var(--xs);color:var(--w4)">
-  <span id="follow-badge">— / —</span>
-</div>
 
 <!-- ============ SLIDE 1: COVER ============ -->
 <section class="slide fb active" data-slide="1" data-section="Opening">
@@ -1753,9 +1749,6 @@ function goTo(n, fromFirebase) {
   prog.style.width = (cur/total*100) + '%';
   tag.textContent = '— ' + (slides[cur-1].dataset.section || '') + ' —';
   info.textContent = cur + ' / ' + total;
-  // Follow mode: update page badge
-  const badge = document.getElementById('follow-badge');
-  if (badge) badge.textContent = cur + ' / ' + total;
   // Padlet button
   const p = slides[cur-1].dataset.padlet;
   if (p) { pBtn.style.display = 'flex'; pBtn.dataset.pid = p; }
@@ -1779,8 +1772,6 @@ if (FOLLOW_MODE) {
   db.ref(SESSION + '/presenter/page').on('value', snap => {
     const page = snap.val();
     if (page && page !== cur) goTo(page, true);
-    const badge = document.getElementById('follow-badge');
-    if (badge && page) badge.textContent = page + ' / ' + total;
   });
 } else {
   /* Route wheel scroll to active slide */
@@ -1811,7 +1802,6 @@ goTo(1);
 
 // ── FOLLOW MODE INIT ──
 if (FOLLOW_MODE) {
-  document.getElementById('follow-overlay').style.display = 'flex';
   // Hide presenter UI elements
   document.getElementById('hint').style.display = 'none';
   document.getElementById('section-tag').style.display = 'none';
