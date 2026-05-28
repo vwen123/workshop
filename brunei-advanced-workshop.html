@@ -1767,7 +1767,15 @@ function goTo(n, fromFirebase) {
 }
 
 if (FOLLOW_MODE) {
-  // Follow mode: listen to presenter page and sync
+  // Block all local navigation in follow mode
+  document.addEventListener('wheel', e => e.preventDefault(), {passive:false});
+  document.addEventListener('keydown', e => {
+    if (['ArrowRight','ArrowLeft',' '].includes(e.key)) e.preventDefault();
+  });
+  document.addEventListener('click', e => {
+    if (!e.target.closest('button,input,.flip,.step,.chk,.ctr-btn')) e.preventDefault();
+  });
+  // Listen to presenter page and sync
   db.ref(SESSION + '/presenter/page').on('value', snap => {
     const page = snap.val();
     if (page && page !== cur) goTo(page, true);
