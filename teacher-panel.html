@@ -353,6 +353,9 @@ try {
       Object.keys(d).forEach(k => { pushState[parseInt(k)] = d[k] && d[k].visible; });
       renderCards();
     });
+  }).catch(() => {
+    initCards(null);
+    renderCards();
   });
 
 } catch(e) {

@@ -1,0 +1,16 @@
+{
+  "rules": {
+    "brunei-advanced": {
+      ".read": true,
+      ".write": true
+    },
+    "brunei-foundation": {
+      ".read": true,
+      ".write": true
+    },
+    "workshop": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}
