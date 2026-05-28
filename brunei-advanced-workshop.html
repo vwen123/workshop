@@ -1760,14 +1760,20 @@ function goTo(n, fromFirebase) {
 }
 
 if (FOLLOW_MODE) {
-  // Block all local navigation in follow mode
-  document.addEventListener('wheel', e => e.preventDefault(), {passive:false});
+  // Block ALL navigation — capture phase so nothing slips through
+  const _nav = e => { e.preventDefault(); e.stopImmediatePropagation(); };
+  document.addEventListener('wheel',      _nav, {passive:false, capture:true});
+  document.addEventListener('touchmove',  _nav, {passive:false, capture:true});
   document.addEventListener('keydown', e => {
-    if (['ArrowRight','ArrowLeft',' '].includes(e.key)) e.preventDefault();
-  });
-  document.addEventListener('click', e => {
-    if (!e.target.closest('button,input,.flip,.step,.chk,.ctr-btn')) e.preventDefault();
-  });
+    if (['ArrowRight','ArrowLeft','ArrowUp','ArrowDown',' '].includes(e.key))
+      _nav(e);
+  }, {capture:true});
+  // clicks: only block nav areas (left/right 30%), allow buttons/inputs
+  document.addEventListener('pointerdown', e => {
+    if (e.target.closest('button,input,textarea,a,.flip,.step,.chk,.ctr-btn,label,select')) return;
+    const x = e.clientX / window.innerWidth;
+    if (x < 0.3 || x > 0.7) _nav(e);
+  }, {capture:true});
   // Listen to presenter page and sync
   db.ref(SESSION + '/presenter/page').on('value', snap => {
     const page = snap.val();
