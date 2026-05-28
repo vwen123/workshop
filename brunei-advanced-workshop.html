@@ -1750,7 +1750,8 @@ const PADLET_URLS = {
 };
 
 // ── FOLLOW MODE ──
-const FOLLOW_MODE = new URLSearchParams(location.search).has('follow');
+// Default: follow mode (students + projector). Add ?presenter to enable local navigation.
+const FOLLOW_MODE = !new URLSearchParams(location.search).has('presenter');
 
 // ── SLIDE SYSTEM ──
 let cur = 1;
