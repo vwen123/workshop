@@ -174,6 +174,12 @@ html,body{height:100%;overflow:hidden;overscroll-behavior:none}body{touch-action
 .badge.amb{background:rgba(251,188,5,.12);color:var(--w2);border-color:rgba(251,188,5,.4)}
 .badge.red{background:rgba(234,67,53,.08);color:var(--gred);border-color:rgba(234,67,53,.3)}
 .badge.grn{background:rgba(52,168,83,.08);color:var(--ggreen);border-color:rgba(52,168,83,.3)}
+
+/* Floating nav arrows for interactive slides */
+.slide-nav-arrow{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,0.12);border:none;font-size:20px;color:#555;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s;z-index:20;line-height:1}
+.slide-nav-arrow:hover{background:rgba(26,26,46,0.75);color:#fff}
+.slide-nav-arrow.prev{left:14px}
+.slide-nav-arrow.next{right:14px}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -247,6 +253,8 @@ html,body{height:100%;overflow:hidden;overscroll-behavior:none}body{touch-action
 
 </div>
 </section><section class="slide" data-slide="4" data-section="Opening">
+  <button class="slide-nav-arrow prev" onclick="goTo(cur-1)">&#8592;</button>
+  <button class="slide-nav-arrow next" onclick="goTo(cur+1)">&#8594;</button>
   <div class="si" style="display:flex;flex-direction:column;height:100%">
     <div style="flex-shrink:0">
       <span class="kicker">Before We Begin</span>
@@ -1195,6 +1203,8 @@ html,body{height:100%;overflow:hidden;overscroll-behavior:none}body{touch-action
   </div>
 </div>
 </section><section class="slide" data-slide="39" data-section="Wrap-up">
+  <button class="slide-nav-arrow prev" onclick="goTo(cur-1)">&#8592;</button>
+  <button class="slide-nav-arrow next" onclick="goTo(cur+1)">&#8594;</button>
   <div class="si" style="display:flex;flex-direction:column;height:100%">
     <div style="flex-shrink:0">
       <span class="kicker">Check-out · Part 1</span>
@@ -1207,6 +1217,8 @@ html,body{height:100%;overflow:hidden;overscroll-behavior:none}body{touch-action
     <div class="wc-area mt20" id="wc-area" style="flex:1;min-height:0;align-content:center"></div>
   </div>
 </section><section class="slide" data-slide="40" data-section="Wrap-up">
+  <button class="slide-nav-arrow prev" onclick="goTo(cur-1)">&#8592;</button>
+  <button class="slide-nav-arrow next" onclick="goTo(cur+1)">&#8594;</button>
   <div class="si" style="display:flex;flex-direction:column;height:100%">
     <div style="flex-shrink:0">
       <span class="kicker">Check-out · Part 2</span>
