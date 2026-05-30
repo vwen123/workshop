@@ -1281,35 +1281,6 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const SESSION = 'brunei-foundation';
 
-let cur = 1;
-const slides = document.querySelectorAll('.slide');
-const total = slides.length;
-const prog = document.getElementById('progress');
-const tag = document.getElementById('section-tag');
-const info = document.getElementById('pageInfo');
-
-function goTo(n) {
-  if (n < 1 || n > total) return;
-  slides[cur-1].classList.remove('active');
-  cur = n;
-  slides[cur-1].classList.add('active');
-  prog.style.width = (cur/total*100) + '%';
-  tag.textContent = '— ' + (slides[cur-1].dataset.section || '') + ' —';
-  info.textContent = cur + ' / ' + total;
-}
-
-document.addEventListener('keydown', e => {
-  if (document.activeElement && ['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return;
-  if (['ArrowRight',' '].includes(e.key)) { e.preventDefault(); goTo(cur+1); }
-  if (['ArrowLeft'].includes(e.key)) { e.preventDefault(); goTo(cur-1); }
-  if (e.key === 'f' || e.key === 'F') { document.documentElement.requestFullscreen?.(); }
-});
-document.addEventListener('click', e => {
-  if (e.target.closest('button,input,textarea,.flip,.step,.t-btn,.padlet-btn')) return;
-  e.clientX > window.innerWidth * 0.7 ? goTo(cur+1) : (e.clientX < window.innerWidth * 0.3 && goTo(cur-1));
-});
-goTo(1);
-
 // Steps click-through
 function advStep(id, idx) {
   document.querySelectorAll('#'+id+' .step').forEach((s,i) => {
