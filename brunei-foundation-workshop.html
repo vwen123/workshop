@@ -1396,8 +1396,10 @@ function renderCloud(wcWords) {
   sorted.forEach(([w,c],i) => {
     const span = document.createElement('span');
     span.className = 'wc-word';
-    const size = 20 + (c/max)*44;
-    span.style.cssText = `font-size:${size}px;color:${wcColors[i%wcColors.length]};opacity:${0.6+c/max*0.4}`;
+    // Absolute scale: 1×→small, repeats→bigger. Cap at max.
+    const size = Math.min(18 + (c - 1) * 16, 18 + (max - 1) * 16);
+    const opacity = max === 1 ? 0.75 : 0.5 + (c / max) * 0.5;
+    span.style.cssText = `font-size:${size}px;color:${wcColors[i%wcColors.length]};opacity:${opacity}`;
     span.textContent = w;
     area.appendChild(span);
   });
