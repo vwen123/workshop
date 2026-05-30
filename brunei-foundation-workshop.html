@@ -1460,7 +1460,8 @@ function goTo(n) {
   prog.style.width = (cur/total*100) + '%';
   tag.textContent = '— ' + (slides[cur-1].dataset.section || '') + ' —';
   info.textContent = cur + ' / ' + total;
-
+  // Presenter auto-broadcasts to students via Firebase
+  if (isPresenter) db.ref(SESSION + '/teacherPage').set(cur);
 }
 
 // All users can navigate (students are blocked by ceiling in goTo)
