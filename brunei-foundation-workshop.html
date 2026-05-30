@@ -1280,8 +1280,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const SESSION = 'brunei-foundation';
-const isPresenter = new URLSearchParams(location.search).has('presenter');
-let teacherPage = 1;
 
 let cur = 1;
 const slides = document.querySelectorAll('.slide');
@@ -1291,8 +1289,6 @@ const tag = document.getElementById('section-tag');
 const info = document.getElementById('pageInfo');
 
 function goTo(n) {
-  // Students: teacherPage is the ceiling (cannot go beyond teacher's current page)
-  if (!isPresenter && n > teacherPage) n = teacherPage;
   if (n < 1 || n > total) return;
   slides[cur-1].classList.remove('active');
   cur = n;
@@ -1300,8 +1296,6 @@ function goTo(n) {
   prog.style.width = (cur/total*100) + '%';
   tag.textContent = '— ' + (slides[cur-1].dataset.section || '') + ' —';
   info.textContent = cur + ' / ' + total;
-  // Presenter auto-broadcasts to students via Firebase
-  if (isPresenter) db.ref(SESSION + '/teacherPage').set(cur);
 }
 
 document.addEventListener('keydown', e => {
@@ -1315,17 +1309,6 @@ document.addEventListener('click', e => {
   e.clientX > window.innerWidth * 0.7 ? goTo(cur+1) : (e.clientX < window.innerWidth * 0.3 && goTo(cur-1));
 });
 goTo(1);
-
-// Students: follow teacher's page; teacherPage is the ceiling
-if (!isPresenter) {
-  db.ref(SESSION + '/teacherPage').on('value', snap => {
-    const p = snap.val();
-    if (p) {
-      teacherPage = p;
-      goTo(p); // auto-follow teacher; students can then go back to review 1..teacherPage
-    }
-  });
-}
 
 // Steps click-through
 function advStep(id, idx) {
